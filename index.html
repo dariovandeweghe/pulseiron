@@ -300,12 +300,13 @@ function progress(){
 let r=rows.filter(recorded),groups={};r.forEach(x=>{let k=x.workout;groups[k]=(groups[k]||0)+num(x.kg)*num(x.reps)});let max=Math.max(1,...Object.values(groups));el('pulseVolumes').innerHTML=Object.entries(groups).map(([name,v],i)=>'<div><div class="pulse-row"><span>'+esc(name)+'</span><strong>'+Math.round(v).toLocaleString('el-GR')+' kg</strong></div><div class="pulse-progress"><div style="width:'+Math.min(100,v/max*100)+'%;background:'+palette[i%palette.length]+'"></div></div></div>').join('')||'<p class="pulse-muted">Δεν υπάρχουν καταχωρίσεις ακόμη.</p>';
 let cat={Chest:0,Back:0,Legs:0,Shoulders:0,Arms:0,Core:0};let classify=n=>/bench|press|pullover|push up|squeeze/i.test(n)?'Chest':/row|pull/i.test(n)?'Back':/squat|deadlift|lunge|thrust|calf/i.test(n)?'Legs':/lateral|arnold|raise|ohp|tate/i.test(n)?'Shoulders':/curl|tricep|bicep/i.test(n)?'Arms':'Core';r.forEach(x=>{cat[classify(x.exercise)]+=num(x.sets)});let top=Math.max(1,...Object.values(cat));el('pulseMuscles').innerHTML=Object.entries(cat).map(([k,v],i)=>'<div><div class="pulse-row"><span style="color:'+palette[i]+'">● '+k+'</span><strong>'+v+' σετ</strong></div><div class="pulse-progress"><div style="width:'+v/top*100+'%;background:'+palette[i]+'"></div></div></div>').join('');
 let dates=uniq2(r.map(x=>x.date)).filter(Boolean),active=new Set(dates);
-const planned=new Map(),originalDays=[...new Set(SEED.plan.map(x=>x.date).filter(Boolean))].sort();
+const planned=new Map(),originalDays=[...new Set(rows.map(x=>x.date).filter(d=>typeof d==='string' && /^\d{4}-\d{2}-\d{2}$/.test(d) && Number.isFinite(new Date(d+'T12:00:00').getTime())))].sort();
 const firstDay=originalDays[0],lastDay=originalDays[originalDays.length-1];
 const addDays=(iso,n)=>{const dt=new Date(iso+'T12:00:00');dt.setDate(dt.getDate()+n);return dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-'+String(dt.getDate()).padStart(2,'0')};
 const sessionKeys=[...new Set(rows.map(x=>x.week+'|'+x.session))];
 sessionKeys.forEach(k=>{const [w,sn]=k.split('|').map(Number),x=rows.find(z=>z.week===w&&z.session===sn);if(!x)return;const d=x.scheduledDate||x.date;if(!planned.has(d))planned.set(d,[]);planned.get(d).push({w,sn,name:x.workout,original:x.date,done:!!(typeof allCompleted==='function'&&allCompleted()[w+'-'+sn])})});
-const start=firstDay, end=addDays(lastDay,6);
+const start=firstDay, end=lastDay ? addDays(lastDay,6) : null;
+if(!start || !end){el('pulseCalendar').innerHTML='<div class="pulse-cal-rest">No valid training dates in the active plan.</div>';el('pulseActiveDays').textContent='0 / 7 training days';return;}
 const totalDays=Math.max(7,Math.round((new Date(end+'T12:00:00')-new Date(start+'T12:00:00'))/86400000)+1);
 overviewWeekTotal=Math.max(1,Math.ceil(totalDays/7));
 if(overviewWeekIndex===null){const now=new Date(),today=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');overviewWeekIndex=today>=start&&today<=end?Math.min(overviewWeekTotal-1,Math.floor((new Date(today+'T12:00:00')-new Date(start+'T12:00:00'))/86400000/7)):0;}
@@ -487,7 +488,7 @@ const originalFor=(w,s)=>rows.find(x=>x.week===w&&x.session===s)?.date||'';
 const setPlanned=(w,s,date)=>{
  if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||Number.isNaN(new Date(date+'T12:00:00').getTime()))return;
  rows.filter(x=>x.week===w&&x.session===s).forEach(x=>x.scheduledDate=date);
- save();renderSchedule();updateFinish();
+ save();renderSchedule();updateFinish();progress();
 };
 const isoPlus=(iso,n)=>{const d=new Date(iso+'T12:00:00');d.setDate(d.getDate()+n);return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())};
 function renderSchedule(){
@@ -495,7 +496,8 @@ function renderSchedule(){
  const entries=sessions.map(sn=>({sn,original:originalFor(w,sn),planned:dateFor(w,sn),workout:rows.find(r=>r.week===w&&r.session===sn).workout,done:allCompleted()[w+'-'+sn]}));
  if(!entries.length){$('scheduleDays').innerHTML='';return}
  const first=entries.map(e=>e.original).sort()[0];const nextWeek=rows.filter(r=>r.week===w+1).map(r=>r.date).sort()[0];const last=nextWeek?isoPlus(nextWeek,-1):isoPlus(entries.map(e=>e.original).sort().at(-1),1);
- let dates=[];for(let d=first;d<=last;d=isoPlus(d,1))dates.push(d);
+ let dates=[];if(/^\d{4}-\d{2}-\d{2}$/.test(first)&&/^\d{4}-\d{2}-\d{2}$/.test(last)){for(let d=first,guard=0;d<=last&&guard<100;d=isoPlus(d,1),guard++)dates.push(d);}
+entries.forEach(e=>{if(/^\d{4}-\d{2}-\d{2}$/.test(e.planned)&&!dates.includes(e.planned))dates.push(e.planned)});dates.sort();
  const dayNames=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
  const displayDate=d=>dayNames[new Date(d+'T12:00:00').getDay()]+' · '+d.split('-').reverse().join('/');
  const originals=new Map(entries.filter(e=>e.planned===e.original).map(e=>[e.original,e]));
