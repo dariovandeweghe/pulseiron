@@ -694,7 +694,7 @@ function template(type,count){if(type==='custom')return Array.from({length:count
  });}
 function variationOptions(name){
  const found=db.find(x=>x.name===name),group=found?.group;
- const pool=db.filter(x=>available(x)&&x.name!==name&&(!group||x.group===group));
+ const pool=db.filter(x=>available(x)&&x.name!==name&&group&&x.group===group).slice(0,14);
  return pool.map(x=>'<option value="'+esc(x.name)+'">'+esc(x.name)+'</option>').join('');
 }
 let piOpenEditorDay=0;
@@ -904,12 +904,56 @@ picker.addEventListener('change',async()=>{
 <div class="pi-auth-gate" id="piAuthGate" hidden><div class="pi-auth-card"><div style="font-size:32px;color:#b4f000;font-weight:950">PULSEIRON</div><h1>Welcome</h1><p>Sign in or create your account first. Then set up your personal training profile.</p><button type="button" id="piAuthGateOpen">Sign in / Create account</button><p style="font-size:12px">Your workouts and profile are linked to your own account.</p></div></div>
 <script id="pi-auth-first">
 (function(){
- const gate=document.getElementById('piAuthGate');let onboardShown=false;
+ const gate=document.getElementById('piAuthGate');let onboardShown=false;let everSigned=false;let missingSince=0;
  const signed=()=>{try{const a=JSON.parse(localStorage.getItem('pi-cloud-auth-v1')||'null');const owner=localStorage.getItem('pi-cloud-local-owner-v1');const status=document.getElementById('piCloudStatus')?.textContent||'';return !!(a?.user?.id&&owner===a.user.id&&(/Cloud saved|Cloud connected|Cloud ready|Cloud data restored|Signed in/.test(status)));}catch{return false}};
  window.piAuthReady=signed;
  document.getElementById('piAuthGateOpen').onclick=()=>document.getElementById('piCloudButton')?.click();
- function check(){const ok=signed();gate.hidden=ok;if(ok&&!onboardShown){onboardShown=true;const profile=localStorage.getItem('pulseiron-clean-v4-profile');if(!profile){window.piShowProfile?.()}else if(!localStorage.getItem('pulseiron-clean-v4-tour')){window.piShowTour?.()}}else if(!ok){onboardShown=false;const onboard=document.getElementById('piOnboard');if(onboard&&!onboard.hidden)onboard.hidden=true;}}
+ function check(){const ok=signed();if(ok){everSigned=true;missingSince=0;gate.hidden=true;}else if(!everSigned){if(!missingSince)missingSince=Date.now();gate.hidden=Date.now()-missingSince<2200;}else{if(!missingSince)missingSince=Date.now();gate.hidden=Date.now()-missingSince<2500;}if(ok&&!onboardShown){onboardShown=true;const profile=localStorage.getItem('pulseiron-clean-v4-profile');if(!profile){window.piShowProfile?.()}else if(!localStorage.getItem('pulseiron-clean-v4-tour')){window.piShowTour?.()}}else if(!ok){onboardShown=false;const onboard=document.getElementById('piOnboard');if(onboard&&!onboard.hidden)onboard.hidden=true;}}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{check();setInterval(check,750)});else{check();setInterval(check,750)}
+})();
+</script>
+<style id="pi-wizard-style">
+#piCreateTop{display:block;width:100%;margin:12px 0 18px;font-size:17px;padding:17px}#piWizard[hidden]{display:none!important}#piWizard{position:fixed;inset:0;z-index:90000;background:rgba(0,0,0,.86);display:flex;align-items:center;justify-content:center;padding:12px}#piWizardBox{width:min(820px,100%);max-height:94dvh;overflow-y:auto;overscroll-behavior:contain;background:#141a12;border:1px solid #667d3d;border-radius:18px;padding:18px}#piWizardHeader{display:flex;justify-content:space-between;align-items:center;gap:12px}#piWizardHeader h2{margin:0}#piWizardActions{display:flex;gap:10px;justify-content:space-between;align-items:center;margin-top:18px;flex-wrap:wrap}#piWizard .pi-wizard-step[hidden]{display:none!important}#piWizard .pi-wizard-step{margin-top:16px}#piWizard #programPreview{max-height:none}#piWizard .pi-create-hint{display:none}#piWizard .pl-day{margin-bottom:10px}#piWizardProgress{color:#b4f000;font-size:13px;font-weight:800;margin:12px 0}#piWizardClose{border:0;background:transparent;color:#eee;font-size:28px;cursor:pointer}#piWizard .field{margin:10px 0}#piWizard .card{border:0;padding:0!important;background:transparent}#piWizard #programPreview input{font-size:16px}@media(max-width:760px){#piWizard{padding:0;align-items:stretch}#piWizardBox{border-radius:0;max-height:100dvh;width:100%;padding:15px}#piWizardActions button{min-height:48px}}
+</style>
+<script id="pi-wizard-script">
+(function(){
+function init(){
+ const page=document.getElementById('programLibrary');if(!page||document.getElementById('piCreateTop'))return;
+ const card=page.querySelector(':scope > .card:not(.section)');if(!card)return;
+ const top=document.createElement('button');top.id='piCreateTop';top.className='btn';top.type='button';top.textContent='+ Create Program';page.insertBefore(top,page.querySelector('details'));
+ const overlay=document.createElement('div');overlay.id='piWizard';overlay.hidden=true;overlay.innerHTML='<div id="piWizardBox" role="dialog" aria-modal="true" aria-labelledby="piWizardTitle"><div id="piWizardHeader"><h2 id="piWizardTitle">Create Program</h2><button id="piWizardClose" type="button" aria-label="Close">×</button></div><div id="piWizardProgress"></div><div id="piWizardBody"></div><div id="piWizardActions"><button type="button" class="btn secondary" id="piWizardBack">← Back</button><button type="button" class="btn" id="piWizardNext">Next →</button></div></div>';
+ document.body.appendChild(overlay);document.getElementById('piWizardBody').appendChild(card);
+ const elements=Array.from(card.children);
+ const stepGroups=[[],[],[],[]];
+ for(const el of elements){
+  if(el.id==='programPreview'||el.classList.contains('pi-create-hint'))stepGroups[2].push(el);
+  else if(el.classList.contains('actions')&&el.querySelector('#programSave'))stepGroups[3].push(el);
+  else if(el.id==='programRecommendation'||el.querySelector?.('#programDays')||el.querySelector?.('#programLocation')||el.querySelector?.('#homeEquipmentChoices')||el.id==='homeEquipmentBox')stepGroups[1].push(el);
+  else if(el.querySelector?.('#programCustomName')||el.querySelector?.('#programStart')||el.querySelector?.('#programWeeks')||el.querySelector?.('#programTemplate'))stepGroups[0].push(el);
+  else if(el.tagName==='P'&&el.textContent.includes('Each HTML file'))el.remove();
+  else stepGroups[0].push(el);
+ }
+ // Separate mixed first row (template + training days) into individual fields.
+ const first=card.querySelector('#programTemplate')?.closest('.filters');
+ if(first){const dayField=first.querySelector('#programDays')?.closest('.field');if(dayField){const holder=document.createElement('div');holder.className='pi-wizard-step';holder.appendChild(dayField);stepGroups[1].unshift(holder);}}
+ const body=document.getElementById('piWizardBody');const containers=stepGroups.map((nodes,i)=>{const wrap=document.createElement('section');wrap.className='pi-wizard-step';wrap.dataset.step=i;nodes.forEach(el=>wrap.appendChild(el));body.appendChild(wrap);return wrap});
+ // Hide save controls until the final step, keep day add/edit tools with exercise step.
+ const actions=card.querySelector('#programSave')?.parentElement;
+ if(actions){const exerciseControls=document.createElement('div');exerciseControls.className='actions';for(const id of ['programAddExercise','programAddDay']){const el=document.getElementById(id);if(el)exerciseControls.appendChild(el)}containers[2].appendChild(exerciseControls)}
+ const save=document.getElementById('programSave');if(save)save.textContent='Save Program';
+ let step=0;const names=['Program details','Schedule & rest days','Exercises by workout day','Review & save'];
+ const next=document.getElementById('piWizardNext'),back=document.getElementById('piWizardBack');
+ function show(n){step=Math.max(0,Math.min(3,n));containers.forEach((x,i)=>x.hidden=i!==step);document.getElementById('piWizardProgress').textContent='Step '+(step+1)+' of 4 · '+names[step];back.disabled=step===0;next.textContent=step===3?'Save Program':'Next →';if(step===3){const preview=document.getElementById('piWizardReview')||document.createElement('div');preview.id='piWizardReview';preview.className='pi-create-hint';const name=document.getElementById('programCustomName')?.value||'My Program';const days=document.getElementById('programDays')?.value||'4';preview.textContent=name+' · '+days+' training days / week · '+(7-Number(days))+' automatically scheduled rest days. Review and save below.';containers[3].prepend(preview)}document.getElementById('piWizardBox').scrollTop=0;}
+ function open(){overlay.hidden=false;document.body.style.overflow='hidden';show(0)}function close(){overlay.hidden=true;document.body.style.overflow=''}
+ top.onclick=open;document.getElementById('piWizardClose').onclick=close;back.onclick=()=>show(step-1);
+ next.onclick=()=>{if(step<3){if(step===0&&!document.getElementById('programCustomName').value.trim()){alert('Enter a program name.');return}show(step+1);return}save?.click()};
+ // After successful save, offer activation using the existing activation path (which archives the previous plan).
+ if(save){const original=save.onclick;save.onclick=function(ev){const key='pulseiron-clean-v4-pulseiron-saved-programs-v1';const saved=document.getElementById('savedPrograms');const before=saved?.innerHTML;original?.call(this,ev);if(saved?.innerHTML!==before&&saved?.querySelector('[data-activate-program]')){close();if(confirm('Program saved! Would you like to activate it now?\n\nCancel = Save for later.')){const buttons=saved.querySelectorAll('[data-activate-program]');buttons[buttons.length-1]?.click()}}};}
+ // Editing a saved program also opens the wizard.
+ document.getElementById('savedPrograms')?.addEventListener('click',e=>{if(e.target.closest('[data-load-program]'))setTimeout(open,0)});
+ show(0);
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
 </script>
 </body></html>
