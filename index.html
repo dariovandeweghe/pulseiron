@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/><title>PULSEIRON — Personal Training</title><style>
+:root{color-scheme:dark;--bg:#101722;--panel:#1b2635;--panel2:#233247;--line:#34445b;--gold:#e9b85a;--ink:#f4f6fa;--muted:#9eafc2;--green:#63cba2}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px system-ui,-apple-system,Segoe UI,Arial,sans-serif}button,input,select{font:inherit}button{cursor:pointer}header{background:#162131;border-bottom:1px solid var(--line);padding:18px max(18px,calc((100vw - 1200px)/2));display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{font-size:22px;letter-spacing:1px;font-weight:850}.brand b{color:var(--gold)}.sub{color:var(--muted);font-size:12px}.wrap{max-width:1200px;margin:auto;padding:22px 18px 80px}.tabs{display:flex;gap:8px;overflow:auto;padding:0 0 18px}.tab{background:var(--panel);border:1px solid var(--line);color:var(--muted);border-radius:12px;padding:12px 15px;white-space:nowrap}.tab.active{background:var(--gold);color:#101722;border-color:var(--gold);font-weight:800}.page{display:none}.page.active{display:block}h1{font-size:27px;margin:0 0 5px}h2{font-size:18px;margin:0 0 12px}.lead{color:var(--muted);margin:0 0 23px}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}.card{background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:18px;min-width:0}.stat{font-size:27px;font-weight:850;color:var(--gold);margin-top:10px}.small{color:var(--muted);font-size:12px}.section{margin-top:20px}.filters{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:20px;align-items:end}.field{display:flex;flex-direction:column;gap:7px;min-width:150px;flex:1}.field label{font-size:12px;color:var(--muted);font-weight:700}select,input{background:#0e1723;color:var(--ink);border:1px solid #52617a;border-radius:10px;padding:12px;min-width:0;width:100%}select:focus,input:focus{outline:2px solid var(--gold);outline-offset:1px}.workout-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.exercise{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px}.exercise h3{margin:0 0 8px;font-size:17px}.meta{color:var(--muted);font-size:12px;line-height:1.7}.editrow{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}.editrow input{border-color:#a48039;background:#272b30;font-size:18px;font-weight:700}.note{margin-top:10px}.note input{font-size:13px;padding:9px}.hint{border-left:3px solid var(--gold);padding:10px 12px;background:#242c36;color:#d8e0e9;border-radius:0 9px 9px 0;font-size:13px;margin-bottom:16px}.chart{height:250px;width:100%;display:block}.chartbox{margin-top:15px}.chart-title{font-weight:750;margin-bottom:5px}.twocol{display:grid;grid-template-columns:1fr 1fr;gap:14px}.tablewrap{overflow:auto;max-height:440px;border-radius:12px;border:1px solid var(--line)}table{border-collapse:collapse;width:100%;font-size:13px}th,td{text-align:left;padding:11px;border-bottom:1px solid var(--line);white-space:nowrap}th{background:#27364a;position:sticky;top:0}tr:nth-child(even){background:#1b2838}.actions{display:flex;flex-wrap:wrap;gap:8px}.btn{background:var(--gold);color:#17202d;border:0;border-radius:10px;padding:11px 14px;font-weight:800}.btn.secondary{background:#2c3d52;color:#e6ebf2;border:1px solid #53627a}.pill{display:inline-block;background:#293d3d;color:#8fe1b6;padding:4px 9px;border-radius:99px;font-size:12px}.empty{color:var(--muted);padding:35px;text-align:center}.footer{color:var(--muted);font-size:12px;margin-top:30px;line-height:1.6}.search{max-width:340px}.guide{margin-bottom:10px}.guide strong{color:var(--gold)}.status{color:var(--green);font-size:12px} @media(max-width:780px){header{padding:14px 16px}.brand{font-size:19px}.wrap{padding:17px 12px 70px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.workout-grid,.twocol{grid-template-columns:1fr}.card{padding:14px}h1{font-size:24px}.stat{font-size:23px}.filters{gap:9px}.field{min-width:130px}.chart{height:225px}.tabs{margin:0 -12px;padding:0 12px 15px}}
+
+/* PULSEIRON visual refresh — dark + lime, responsive */
+:root{color-scheme:dark;--bg:#080909;--panel:#151515;--panel2:#1b1d1b;--line:#2b2d2a;--gold:#b4f000;--ink:#f8f9f8;--muted:#9ca0a2;--green:#b4f000}body{background:#090a09;font-family:Inter,system-ui,-apple-system,'Segoe UI',sans-serif}header{background:#0b0c0b;border-color:#242624;padding:16px max(18px,calc((100vw - 1250px)/2));position:sticky;top:0;z-index:10}.brand{font-weight:950;letter-spacing:-1px;color:white}.brand b{color:#b4f000}.wrap{max-width:1280px;padding:22px 20px 85px}.tabs{gap:3px;border-bottom:1px solid #242624;margin-bottom:22px}.tab{background:transparent;border:0;border-radius:0;padding:14px 13px;color:#a2a2a2;font-size:13px;font-weight:650}.tab.active{background:transparent;border-bottom:2px solid #b4f000;color:#b4f000}.tab:hover{color:#d9f9a1}.card,.exercise{background:#151515;border:1px solid #2a2b2a;border-radius:20px;padding:20px}.stat{color:#b4f000}.hint{background:#19220e;border:1px solid #425e12;color:#dcff9b}.btn,.tab.active,.btn:not(.secondary){--gold:#b4f000}.btn{background:#b4f000;color:#111;border-color:#b4f000;font-weight:800}.btn.secondary{background:#242424;color:#f4f4f4;border:1px solid #383838}input,select{background:#171717;border:1px solid #3a3c3a;color:white}input:focus,select:focus{outline-color:#b4f000}.status{color:#b4f000}.chart{min-height:200px}.section{margin-top:25px}.small,.lead{color:#a3a7a3}.section-title{font-size:22px;font-weight:850;letter-spacing:-.7px}.pulse-hero{padding:25px;border:1px solid #2d2e2c;border-radius:24px;background:linear-gradient(135deg,#181918,#101110);margin-bottom:24px}.pulse-hero h1{font-size:29px;font-weight:900;letter-spacing:-1px}.pulse-eyebrow{color:#b4f000;font-weight:800;font-size:12px;letter-spacing:.3px}.pulse-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}.pulse-stat{border:1px solid #292b29;border-radius:18px;background:#151515;padding:18px}.pulse-stat strong{font-size:30px;color:#b4f000;display:block;margin:10px 0}.pulse-stat span{color:#aaa;font-size:12px}.pulse-two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.pulse-card{border:1px solid #292b29;background:#151515;border-radius:20px;padding:22px}.pulse-card h3{margin:0 0 16px;font-size:18px}.pulse-progress{height:9px;border-radius:9px;background:#0a0a0a;overflow:hidden;margin:10px 0 18px}.pulse-progress>div{height:100%;border-radius:9px;background:linear-gradient(90deg,#00bff8,#b4f000)}.pulse-row{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:13px}.pulse-row small{color:#a0a0a0}.pulse-prs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.pulse-pr{background:#111;border:1px solid #2a2a2a;border-radius:15px;padding:16px}.pulse-pr strong{display:block;font-size:16px;margin:8px 0}.pulse-pr b{font-size:25px}.pulse-pr small{color:#aaa}.pulse-pill{display:inline-block;border:1px solid #343a2c;background:#1a2510;color:#b4f000;border-radius:20px;padding:5px 10px;font-size:11px}.pulse-action{background:#b4f000;color:#101010;border:0;border-radius:12px;padding:11px 15px;font-weight:800;cursor:pointer}.pulse-muted{color:#aaa;font-size:12px}.pulse-calendar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px}.pulse-day{border:1px solid #262626;background:#101010;border-radius:12px;min-height:54px;padding:8px;text-align:center;font-size:12px;color:#777}.pulse-day.hit{background:#1c2b0e;border-color:#719b00;color:#c4ff3a}.pulse-template{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.pulse-template .pulse-card{display:flex;flex-direction:column}.pulse-template .pulse-action{margin-top:auto}.pulse-exlist{padding:0;list-style:none}.pulse-exlist li{border:1px solid #292929;background:#101010;padding:10px 12px;margin-bottom:6px;border-radius:9px;display:flex;justify-content:space-between;gap:8px;font-size:12px}.pulse-exlist span{color:#aaa}.pulse-search{margin-bottom:15px}.pulse-library{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.pulse-calculator{display:grid;grid-template-columns:1fr 1.4fr;gap:20px}.pulse-form label{font-size:12px;color:#a9a9a9;display:block;margin:12px 0 5px}.pulse-result{font-size:48px;font-weight:900;color:#00bfff}.pulse-plates{display:flex;gap:5px;align-items:center;justify-content:center;min-height:140px;background:#101010;border-radius:14px}.pulse-plate{display:flex;align-items:center;justify-content:center;border:2px solid #555;background:#292929;border-radius:5px;font-weight:800;font-size:12px;padding:4px}.pulse-bar{width:55px;height:14px;background:#555}.pulse-list{display:grid;grid-template-columns:1fr 1fr;gap:8px}.pulse-list>div{border:1px solid #333;padding:11px;border-radius:10px;font-size:12px;display:flex;justify-content:space-between}.pulse-list b{color:#00bfff}.pulse-footer{margin-top:24px;color:#999;font-size:12px}@media(max-width:760px){header{padding:12px 16px;position:relative}.wrap{padding:12px 12px 55px}.tabs{gap:0}.tab{font-size:12px;padding:12px 10px}.pulse-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.pulse-two,.pulse-template,.pulse-calculator{grid-template-columns:1fr}.pulse-library,.pulse-prs{grid-template-columns:1fr 1fr}.pulse-card{padding:16px}.pulse-hero h1{font-size:24px}.pulse-stat strong{font-size:25px}.pulse-day{min-height:43px;padding:5px;font-size:10px}}@media(max-width:430px){.pulse-library,.pulse-prs{grid-template-columns:1fr}.pulse-calendar{gap:3px}.pulse-day{min-height:40px}}
+ .pulse-day{min-height:90px;text-align:left;overflow-wrap:anywhere}.pulse-day strong{display:block;margin:4px 0}.pulse-day.planned{border-color:#526c1d}.pulse-cal-name{font-size:10px;font-weight:750;color:#c6fa68;margin-top:5px;line-height:1.3}.pulse-cal-rest{font-size:10px;color:#929994;margin-top:7px}.pulse-day.rescheduled{box-shadow:inset 0 0 0 1px #b4f000}@media(max-width:760px){.pulse-calendar{grid-template-columns:repeat(4,minmax(0,1fr))}.pulse-day{min-height:83px}}@media(max-width:430px){.pulse-calendar{grid-template-columns:repeat(2,minmax(0,1fr))}} .body-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px}.body-fields input{width:100%;box-sizing:border-box}#bmTable table{min-width:1000px}#bmTable button{white-space:nowrap} 
+/* Mobile program editor: one complete exercise per card */
+@media(max-width:760px){
+ #programLibrary,#programLibrary .card,#programPreview,#programPreview>*,#programPreview .tablewrap{min-width:0!important;max-width:100%!important;box-sizing:border-box!important}
+ #programPreview .tablewrap{overflow:visible!important}
+ #programPreview table,#programPreview tbody,#programPreview tr,#programPreview td{display:block!important;width:100%!important;min-width:0!important;box-sizing:border-box!important}
+ #programPreview thead{display:none!important}
+ #programPreview tbody tr{border:1px solid #3c403a!important;border-radius:14px!important;padding:12px!important;margin:12px 0!important;background:#171b1c!important}
+ #programPreview tbody td{padding:7px 0!important;border:0!important;text-align:left!important;overflow:visible!important}
+ #programPreview tbody td::before{display:block;color:#b4f000;font-size:11px;font-weight:800;letter-spacing:.04em;margin-bottom:5px}
+ #programPreview tbody td:nth-child(1)::before{content:'EXERCISE / ΑΣΚΗΣΗ'}
+ #programPreview tbody td:nth-child(2)::before{content:'SETS / ΣΕΤ'}
+ #programPreview tbody td:nth-child(3)::before{content:'REPS / ΕΠΑΝΑΛΗΨΕΙΣ'}
+ #programPreview tbody td:nth-child(4)::before{content:'TARGET KG / ΣΤΟΧΟΣ'}
+ #programPreview tbody td input,#programPreview tbody td select{display:block!important;width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important;margin:5px 0!important;font-size:16px!important}
+ #programPreview .editrow{display:flex!important;flex-wrap:wrap!important;gap:10px!important}
+ #programPreview .editrow input{min-width:0!important;max-width:100%!important;flex:1!important}
+ .pulse-calendar{grid-template-columns:repeat(7,minmax(0,1fr))!important;gap:3px!important}
+ .pulse-day{min-height:86px!important;padding:5px 2px!important;font-size:10px!important;overflow-wrap:anywhere!important}
+ .pulse-cal-name,.pulse-cal-rest{font-size:9px!important;line-height:1.2!important}
+ .pulse-week-nav{gap:7px!important;flex-wrap:wrap!important}
+}
+.pulse-week-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0 16px}
+.pulse-week-nav button{background:#242624;color:#caff6b;border:1px solid #4c6128;border-radius:10px;padding:10px 14px;cursor:pointer;font-weight:800}
+.pulse-week-nav button:disabled{opacity:.35;cursor:default}
+.pulse-week-nav strong{text-align:center;font-size:13px}
+
+/* Standalone program cards: no table/grid inheritance on mobile */
+#programPreview{display:block;min-width:0;max-width:100%;overflow:visible}
+#programPreview .pl-day{display:block;position:relative;min-width:0;width:100%;height:auto;overflow:visible;padding:16px;margin:16px 0 22px;background:#151715;border:1px solid #343a32;border-radius:18px;box-sizing:border-box}
+#programPreview .pl-day-head{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-bottom:14px}
+#programPreview .pl-day-head span{font-size:13px;font-weight:800;color:#b4f000}
+#programPreview .pl-day-head input{flex:1 1 180px;min-width:0;width:auto;font-size:17px;font-weight:750}
+#programPreview .pl-exercises{display:flex;flex-direction:column;gap:12px}
+#programPreview .pl-exercise{position:relative;display:flex;flex-direction:column;gap:12px;min-width:0;height:auto;overflow:visible;padding:15px;background:#1a201d;border:1px solid #3d493b;border-radius:14px;box-sizing:border-box}
+#programPreview .pl-exercise-title{display:flex;align-items:center;justify-content:space-between;gap:10px}
+#programPreview .pl-exercise-title strong{color:#e7eae6;font-size:13px}
+#programPreview .pl-remove{flex:none;min-width:40px;min-height:40px;border:1px solid #555;border-radius:10px;background:#292929;color:white;font-size:23px}
+#programPreview .pl-field{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:6px!important;position:static!important;float:none!important;min-width:0!important;width:100%!important;margin:0!important;color:#b4f000;font-size:11px!important;font-weight:800;line-height:1.4}
+#programPreview .pl-field input,#programPreview .pl-field select{display:block!important;position:static!important;float:none!important;min-width:0!important;width:100%!important;max-width:100%!important;height:48px!important;min-height:48px!important;margin:0!important;padding:9px 12px!important;font-size:16px!important;line-height:1.4!important;box-sizing:border-box!important}
+#programPreview .pl-numbers{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;min-width:0}
+#programPreview .pl-add{margin-top:14px}
+@media(max-width:420px){#programPreview .pl-day{padding:12px}#programPreview .pl-exercise{padding:12px}#programPreview .pl-numbers{gap:8px}}
+
+.pi-start-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:14px 0}.pi-start-grid .field,.pi-start-grid input,.pi-start-grid select{min-width:0;width:100%;box-sizing:border-box}.pi-start #piStartResult{margin-top:12px;line-height:1.6;overflow-wrap:anywhere}@media(max-width:650px){.pi-start-grid{grid-template-columns:1fr}.pi-start .actions{display:flex;flex-direction:column;align-items:stretch}.pi-start .actions button{width:100%;white-space:normal}}
+</style><link href="manifest.webmanifest" rel="manifest"/><meta content="#101722" name="theme-color"/><link href="icon-192.png" rel="icon"/><style>
+#piExerciseGuide summary{list-style-position:inside}#piExerciseGuide .pi-guide-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:8px;max-height:300px;overflow:auto}#piExerciseGuide .pi-guide-item{width:100%;text-align:left;border:1px solid #34424b;background:#151e26;color:#eaf3f4;padding:11px;border-radius:10px;white-space:normal;overflow-wrap:anywhere;cursor:pointer}#piExerciseGuide .pi-guide-item:focus-visible{outline:2px solid #b4f000}#piExerciseGuide .pi-guide-detail{margin-top:14px}#piExerciseGuide .pi-guide-panel{border:1px solid #526744;border-radius:12px;padding:14px;background:#121e1c;line-height:1.6}#piExerciseGuide .pi-guide-panel h3{margin:0 0 5px;color:#b4f000}#piExerciseGuide .pi-guide-panel p{margin:8px 0}#piExerciseGuide .pi-guide-tag{font-size:.8rem;opacity:.8}@media(max-width:520px){#piExerciseGuide .pi-guide-list{grid-template-columns:1fr 1fr}#piExerciseGuide .pi-guide-item{font-size:12px;padding:9px}#piExerciseGuide .pi-guide-panel{padding:12px}}
+</style><style id="pi-onboard-css">
+.pi-modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:99999;display:flex;align-items:center;justify-content:center;padding:16px;overflow-y:auto;box-sizing:border-box}.pi-modal-backdrop[hidden]{display:none!important}.pi-modal{width:min(100%,480px);max-height:calc(100dvh - 32px);overflow-y:auto;box-sizing:border-box;background:#171e22;border:1px solid #657c39;border-radius:18px;padding:22px;color:#f4f7ed;box-shadow:0 15px 70px #000b}.pi-modal h2{font-size:1.45rem;margin:0 0 8px}.pi-modal p{line-height:1.55;color:#cbd2c4}.pi-modal label{display:block;margin:12px 0 5px;font-size:.83rem;font-weight:700}.pi-modal input,.pi-modal select{width:100%;box-sizing:border-box;background:#0c1114;color:white;border:1px solid #52605a;border-radius:9px;padding:12px;font-size:16px;min-height:44px}.pi-modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.pi-modal-actions{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;margin-top:20px}.pi-modal button{padding:12px 15px;border:0;border-radius:9px;cursor:pointer;font-weight:700;background:#b4f000;color:#141b12}.pi-modal button.pi-muted{background:#343e40;color:white}.pi-modal .pi-step{font-size:.8rem;color:#b4f000;margin-bottom:12px}.pi-help{display:inline-flex;margin-left:7px;vertical-align:middle;border:1px solid #789449;border-radius:50%;width:22px;height:22px;align-items:center;justify-content:center;color:#b4f000;background:transparent;cursor:pointer;font-size:13px}.pi-profile-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 18px}.pi-profile-toolbar button{border:1px solid #718c38;background:#192322;color:#c8f56a;border-radius:9px;padding:10px 13px;cursor:pointer}@media(max-width:400px){.pi-modal{padding:16px}.pi-modal-grid{grid-template-columns:1fr}.pi-modal-actions button{flex:1}}
+</style><style>
+.pi-main-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:0 0 12px}.pi-main-nav button{background:#191c18;color:#c7cbc2;border:1px solid #353c30;border-radius:13px;padding:12px 5px;font-size:13px;font-weight:700}.pi-main-nav button.active{color:#b4f000;border-color:#b4f000;background:#1d2914}.pi-sub-nav{display:flex;gap:7px;overflow-x:auto;padding-bottom:10px;margin-bottom:14px}.pi-sub-nav button{white-space:nowrap;background:#1c1d1b;color:#c9cdc4;border:1px solid #383b35;border-radius:10px;padding:9px 11px;font-size:12px}.pi-sub-nav button.active{border-color:#b4f000;color:#b4f000}.pi-modal-backdrop.pi-tour-mode{align-items:flex-end;justify-content:center;pointer-events:none;background:transparent;padding:12px;z-index:100000}.pi-tour-mode .pi-modal{pointer-events:auto;max-height:45dvh;width:min(100%,520px);box-shadow:0 0 0 100vmax rgba(0,0,0,.30),0 0 28px #000;border:1px solid #b4f000}.pi-tour-mode .pi-modal h2{font-size:18px}.pi-tour-mode .pi-modal p{font-size:13px}.pi-tour-mode .pi-modal-actions{flex-wrap:wrap}#piAccountPage .actions{gap:10px}@media(max-width:430px){.pi-main-nav{gap:4px}.pi-main-nav button{font-size:11px;padding:11px 2px}.pi-sub-nav button{font-size:11px;padding:8px}.pi-tour-mode .pi-modal{max-height:48dvh}}
+</style><script src="pulseiron-cloud.js"></script></head><body><div id="iosFileNotice" style="display:none;padding:12px 16px;background:#18231a;color:#e6f4df;border:1px solid #506738;border-radius:12px;margin:12px auto;max-width:900px;font:14px system-ui">iPhone / Safari: If this HTML was opened as a file preview, use Safari with a hosted HTTPS link for reliable saving. Export a JSON backup regularly.</div><header><div><div class="brand"><span style="display:inline-flex;align-items:center;justify-content:center;background:#b4f000;color:#111;width:34px;height:34px;border-radius:50%;font-size:15px;margin-right:8px">PI</span>PULSE<b>IRON</b></div><div class="sub">Your strength · Your progress · Cloud Sync</div></div><div style="display:flex;align-items:center;gap:12px"><label for="pulseLanguage" style="font-size:12px;font-weight:700">🌐 </label></div><div class="status" id="saveStatus">● Local save enabled</div></header><main class="wrap"><nav aria-label="Main navigation" class="pi-main-nav" id="piMainNav"></nav><div aria-label="Section navigation" class="pi-sub-nav" id="piSubNav"></div><nav class="tabs" id="piLegacyTabs" style="display:none"><button class="tab" data-tab="workout">Active: <span id="activeProgramTabName">Heavy Hypertrophy</span></button><button class="tab active" data-tab="dashboard">Overview</button><button class="tab" data-tab="strength">Charts &amp; Progress</button><button class="tab" data-tab="review">Weekly Review</button><button class="tab" data-tab="history">History</button><button class="tab" data-tab="programLibrary">Program Library</button><button class="tab" data-tab="archives">Program Archive</button><button class="tab" data-tab="body">Body Measurements</button></nav>
+<section class="page" id="workout"><h1>Active Program: <span id="activeProgramTitle">Heavy Hypertrophy Challenge</span></h1><div class="card" style="margin-bottom:16px"><div class="field"><label for="activeProgramName">ACTIVE PROGRAM NAME</label><div class="editrow"><input id="activeProgramName" maxlength="100" style="flex:1;min-width:180px" type="text" value=""/><button class="btn" id="saveActiveProgramName" type="button">Save Name</button></div></div><p class="small">Changing the name does not replace exercises or targets. A new program will be activated separately after completing the current one.</p></div><p class="lead">Select a week and session to see only that workout’s exercises.</p><div class="filters"><div class="field"><label for="week">WEEK</label><select id="week"></select></div><div class="field"><label for="session">SESSION</label><select id="session"></select></div></div><div class="hint" id="workoutInfo"></div><div class="workout-grid" id="exerciseList"></div><div class="pulse-card section" id="sessionFinishBox"><h3>Workout Completion</h3><div id="cyclicalTimer" style="display:none"><p class="small">Cyclical completion time (10 rounds). Enter minutes and seconds.</p><div class="editrow"><div class="field"><label>MINUTES</label><input id="cycMinutes" max="999" min="0" placeholder="e.g. 32" step="1" type="number"/></div><div class="field"><label>SECONDS</label><input id="cycSeconds" max="59" min="0" placeholder="e.g. 40" step="1" type="number"/></div></div><p class="small" id="cycCompare"></p></div><div class="field" style="margin-top:15px;max-width:320px"><label for="plannedWorkoutDate">SCHEDULED DATE (editable)</label><input id="plannedWorkoutDate" type="date"/><p class="small" id="originalWorkoutDate"></p></div><div class="field" style="margin-top:15px;max-width:280px"><label for="actualWorkoutDate">WORKOUT DATE (editable)</label><input id="actualWorkoutDate" type="date"/></div><div class="actions" style="margin-top:16px"><button class="btn" id="finishSession">✓ Complete Workout</button><button class="btn secondary" id="undoSession" style="display:none">Undo completion</button></div><p class="small" id="finishMessage" style="margin-top:10px"></p></div></section>
+<section class="page active" id="dashboard"><h1>Training Dashboard</h1><p class="lead">Charts use actual logged results. Empty weeks are not treated as zero performance.</p><div class="grid" id="stats"></div><div class="twocol section"><div class="card"><h2>Training volume per week</h2><svg aria-label="Training volume chart" class="chart" id="volumeChart" role="img"></svg></div><div class="card"><h2>Total Reps</h2><svg aria-label="Repetitions chart" class="chart" id="repsChart" role="img"></svg></div></div><div class="card section"><h2>Entries per week</h2><div class="tablewrap" id="weeklyTable"></div></div><div class="pulse-two section"><div class="pulse-card"><h3>Total Kg per Workout</h3><div id="pulseVolumes"></div></div><div class="pulse-card"><h3>Active Set Distribution</h3><div id="pulseMuscles"></div></div></div><div class="pulse-card section"><div class="pulse-row"><h3>Workout Calendar</h3><span class="pulse-pill" id="pulseActiveDays"></span></div><div class="pulse-calendar" id="pulseCalendar"></div><div class="pulse-planner" style="margin-top:20px;border-top:1px solid #343434;padding-top:18px"><div class="pulse-row" style="margin-bottom:14px;flex-wrap:wrap"><div><h3 style="margin:0 0 5px">8-week Schedule &amp; Rest Days</h3><p class="small" style="margin:0">See the original schedule and reschedule only the workout you choose.</p></div><div class="field"><label for="scheduleWeek">WEEK</label><select id="scheduleWeek"></select></div></div><div id="scheduleDays"></div></div></div><div class="pulse-card section"><h3>Personal Records (Hall of Fame)</h3><div class="pulse-prs" id="pulseHall"></div></div></section>
+<section class="page" id="strength"><h1>Strength Analysis</h1><p class="lead">All exercises with actual charts of weight, reps and training volume.</p><div class="filters"><div class="field"><label for="exerciseSelect">EXERCISE</label><select id="exerciseSelect"></select></div></div><div class="grid" id="strengthStats"></div><div class="twocol section"><div class="card"><h2>Actual Weight (kg)</h2><svg aria-label="Exercise weight progress" class="chart" id="weightChart" role="img"></svg></div><div class="card"><h2>Actual Reps</h2><svg aria-label="Exercise repetitions progress" class="chart" id="exerciseRepsChart" role="img"></svg></div></div><div class="card section"><h2>Training Volume (kg × reps)</h2><svg aria-label="Exercise training volume" class="chart" id="exerciseVolumeChart" role="img"></svg></div><div class="card section"><h2>All entries for this exercise</h2><div class="tablewrap" id="exerciseTable"></div></div><details class="pulse-card" id="tools" style="margin-top:24px"><summary style="cursor:pointer;font-weight:750;font-size:1.08rem">Strength Calculator · 1RM &amp; Plates</summary><div style="margin-top:14px"><div class="pulse-hero"><span class="pulse-eyebrow">STRENGTH TOOLS</span><h1>1RM &amp; Plate Calculator</h1><p class="lead">Estimates for training planning, not a direct measurement of your maximum.</p></div><div class="pulse-card"><h3>Estimated 1RM (Epley)</h3><div class="pulse-calculator"><div class="pulse-form"><label>Exercise — automatically use logged results</label><select aria-label="Select exercise" id="pulse1Exercise"></select><p class="pulse-muted" id="pulse1AutoNote">Select an exercise to load its recorded weight and estimated reps per set.</p><label>Lifted weight (kg)</label><input id="pulse1Weight" min="0" step="0.5" type="number" value="80"/><label>Reps</label><input id="pulse1Reps" max="12" min="1" type="number" value="6"/><div class="pulse-card" style="margin-top:15px;background:#101619;border-color:#14506b;text-align:center"><div class="pulse-muted">ESTIMATED 1RM</div><div class="pulse-result" id="pulse1Result">96 kg</div></div></div><div><h3>Training zones (% 1RM)</h3><div class="pulse-list" id="pulse1Zones"></div></div></div></div><div class="pulse-card section"><h3>Plate Calculator — Plates per side</h3><div class="pulse-calculator"><div class="pulse-form"><label>Target total weight (kg)</label><input id="pulsePlateTarget" min="0" step="0.5" type="number" value="85"/><label>Bar weight</label><select id="pulseBarWeight"><option value="20">Olympic bar (20 kg)</option><option value="15">15 kg bar</option><option value="10">10 kg bar</option></select><p class="pulse-muted" id="pulsePlateMessage"></p></div><div><div class="pulse-row"><span>Plates per side</span><strong id="pulsePlatePerSide" style="color:#b4f000"></strong></div><div class="pulse-plates" id="pulsePlateVisual"></div><div class="pulse-muted" id="pulsePlateLabels"></div></div></div></div></div></details></section>
+<section class="page" id="review"><h1>Weekly Target Review</h1><p class="lead">Review the completed week and choose next week’s targets. No changes without your approval.</p><div class="filters"><div class="field"><label for="reviewWeek">COMPLETED WEEK</label><select id="reviewWeek"></select></div><div class="field"><label for="reviewSession">SESSION</label><select id="reviewSession"></select></div></div><div class="field" style="max-width:320px;margin-bottom:14px"><label for="trainingMode">TRAINING MODE / PROGRAM TYPE</label><select id="trainingMode"><option value="heavy">Heavy Hypertrophy</option><option value="extreme">Extreme Hypertrophy</option><option value="cutting">Cutting</option><option value="strength">Strength / Powerbuilding</option><option value="classic">Classic Hypertrophy</option><option value="power">Powerbuilding</option><option value="recomp">Body Recomposition</option><option value="full">Full Body</option><option value="upper">Upper / Lower</option><option value="ppl">Push / Pull / Legs</option></select></div><p class="small">This selection only changes Weekly Review suggestions. It does not replace the active program or exercises.</p><div class="hint">Suggestions are indicative: check form, RIR and pain before increasing weight. Without logged data, no change is suggested. Targets are never reduced automatically.</div><div class="card" id="reviewSummary"></div><div class="workout-grid section" id="reviewList"></div><div class="actions section"><button class="btn secondary" id="reviewExport">⬇ Export Weekly Review (.txt)</button></div><p class="small section">You can share the Weekly Review for joint target decisions. Cloud sync is available after signing in. Export JSON backups regularly.</p></section>
+<section class="page" id="programLibrary"><h1>Program Library</h1><div class="card pi-start" id="piStartCard"><h2>🚀 START · Your starting point</h2><p class="small">Complete your profile to receive a program recommendation. You can change it later. Your active program will not be changed.</p><div class="pi-start-grid"><div class="field"><label for="piHeight">HEIGHT (cm)</label><input id="piHeight" max="250" min="100" placeholder="e.g. 180" step="1" type="number"/></div><div class="field"><label for="piWeight">WEIGHT (kg)</label><input id="piWeight" max="350" min="25" placeholder="e.g. 80" step="0.1" type="number"/></div><div class="field"><label for="piExperience">EXPERIENCE</label><select id="piExperience"><option value="beginner">Beginner</option><option value="intermediate">Intermediate</option><option value="advanced">Advanced</option></select></div><div class="field"><label for="piGoal">GOAL</label><select id="piGoal"><option value="muscle">Muscle gain</option><option value="strength">Strength</option><option value="fatloss">Fat loss</option><option value="recomp">Recomposition</option><option value="fitness">General fitness</option></select></div></div><div class="field" style="margin-top:14px"><label>STARTING LOAD CALIBRATION (optional)</label><p class="small">Enter a weight you have already lifted with good form for 8–12 reps. Enter the combined weight, not the weight per hand. This is not a maximum strength test.</p></div><div class="pi-start-grid"><div class="field"><label for="piPressKg">Dumbbell Bench Press · total kg</label><input id="piPressKg" max="400" min="0" placeholder="e.g. 24" step="0.5" type="number"/></div><div class="field"><label for="piRowKg">One Arm Dumbbell Row · kg per hand</label><input id="piRowKg" max="200" min="0" placeholder="e.g. 14" step="0.5" type="number"/></div><div class="field"><label for="piSquatKg">Goblet Squat · kg</label><input id="piSquatKg" max="200" min="0" placeholder="e.g. 16" step="0.5" type="number"/></div></div><p class="small">Suggested weights appear only when enough information is available. For other exercises, start with a manageable test weight and set the target yourself.</p><div class="actions"><button class="btn" id="piRecommend" type="button">▶ START · Recommend a program</button><button class="btn secondary" id="piEditProfile" type="button">Save Profile</button></div><div aria-live="polite" class="small" id="piStartResult" role="status"></div></div><p class="lead">Choose a program and training days, see suggested exercises, sets and reps, or build your own. Starting weights are suggested only when past performance data is available and can always be adjusted.</p><div class="card"><div class="filters"><div class="field"><label for="programTemplate">PROGRAM</label><select id="programTemplate"></select></div><div class="field"><label for="programDays">TRAINING DAYS PER WEEK</label><select id="programDays"><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option></select></div></div><div class="filters"><div class="field"><label for="programLocation">LOCATION</label><select id="programLocation"><option value="gym">🏋️ Gym</option><option value="home">🏠 Home</option><option value="both">🏋️🏠 Gym &amp; Home</option></select></div><div class="field" id="homeEquipmentBox" style="display:none"><label>HOME EQUIPMENT</label><div id="homeEquipmentChoices" style="display:flex;flex-wrap:wrap;gap:10px;margin:8px 0"></div><p class="small">Select all equipment you own. Exercise recommendations will adapt to your equipment.</p></div></div><p class="small" id="programRecommendation"></p><div class="field"><label for="programCustomName">PROGRAM NAME</label><input id="programCustomName" placeholder="Lower"/></div><div class="field"><label for="programStart">START DATE</label><input id="programStart" type="date"/></div><div class="field"><label for="programWeeks">DURATION (WEEKS)</label><select id="programWeeks"><option>4</option><option selected="">8</option><option>12</option></select></div><p class="small" style="border:1px solid #667735;border-radius:10px;padding:10px">⚠ Each HTML file may store data separately. Before changing versions: History → Export backup (JSON). Then import it into the new file. Keep your previous version.</p><div class="section" id="programPreview"></div><div class="actions section"><button class="btn secondary" id="programAddExercise" type="button">+ Add Exercise</button><button class="btn secondary" id="programAddDay" type="button">+ Add Day</button><button class="btn" id="programSave" type="button">Save Program</button></div><p class="small">Templates are suggestions and can be customized. Saving does not replace your current Heavy Hypertrophy program.</p></div><div class="card section"><h2>My Programs</h2><div id="savedPrograms"></div></div></section><section class="page" id="piExerciseGuidePage"><h1>📖 Exercise Guide</h1><p class="lead">All exercises in the library, with instructions, common mistakes and technique tips. This is not a workout log.</p><details class="card" id="piExerciseGuide" open="" style="margin:16px 0 20px"><summary style="cursor:pointer;font-size:1.08rem;font-weight:750">📖 EXERCISE GUIDE — OPEN</summary><p class="small">Select an exercise for technique instructions, mistakes and tips. Available offline.</p><input aria-label="Search exercises" id="piGuideSearch" placeholder="Search exercise" style="width:100%;max-width:100%;box-sizing:border-box;padding:12px;margin:8px 0 14px" type="search"/><div class="pi-guide-list" id="piGuideList"></div><div aria-live="polite" class="pi-guide-detail" id="piGuideDetail"></div></details></section><section class="page" id="archives"><h1>Program Archive</h1><p class="lead">Keep a complete copy of the program, exercises, logs and times. The active program is not deleted.</p><div class="card"><h2>Archive Completed Program</h2><p class="small">Use this only after completing the program. A read-only snapshot will be saved for future reference.</p><div class="field"><label>Program Name</label><input id="archiveName" value="Heavy Hypertrophy Challenge · 8 Weeks"/></div><div class="actions" style="margin-top:12px"><button class="btn" id="archiveCurrent" type="button">Archive Active Program</button></div></div><div class="section" id="archiveList"></div><div class="section" id="archiveDetail"></div></section><section class="page" id="body"><h1>Body Measurements</h1><p class="lead">Your real Excel measurements, with editable measurement dates. New entries are stored on this device.</p><div class="card"><h2 id="bodyFormTitle">New Measurement</h2><form id="bodyForm"><div class="body-fields"><div class="field"><label>Measurement Date</label><input id="bmDate" required="" type="date"/></div><div class="field"><label>Weight (kg)</label><input id="bmWeight" min="0" step="0.01" type="number"/></div><div class="field"><label>Skeletal muscle (kg)</label><input id="bmMuscle" min="0" step="0.01" type="number"/></div><div class="field"><label>Fat mass (kg)</label><input id="bmFatMass" min="0" step="0.01" type="number"/></div><div class="field"><label>Body fat (%)</label><input id="bmBodyFat" max="100" min="0" step="0.01" type="number"/></div><div class="field"><label>Waist (cm)</label><input id="bmWaist" min="0" step="0.1" type="number"/></div><div class="field"><label>Arms (cm)</label><input id="bmArms" min="0" step="0.1" type="number"/></div><div class="field"><label>Body water (kg)</label><input id="bmWater" min="0" step="0.01" type="number"/></div><div class="field"><label>BMI</label><input id="bmBmi" min="0" step="0.01" type="number"/></div><div class="field"><label>BMR (kcal)</label><input id="bmBmr" min="0" step="1" type="number"/></div></div><div class="field" style="margin-top:12px"><label>Notes</label><input id="bmNotes" placeholder="Optional" type="text"/></div><div class="actions" style="margin-top:14px"><button class="btn" type="submit">Save Measurement</button><button class="btn secondary" hidden="" id="bmCancel" type="button">Cancel Editing</button></div></form></div><div class="grid section" id="bmStats"></div><div class="card section"><h2>Measurement Progress</h2><div class="field" style="max-width:330px"><label>Choose Chart Metric</label><select id="bmMetric"></select></div><svg aria-label="Measurement Progress" class="chart" id="bmChart" role="img"></svg></div><div class="card section"><h2>Measurement History</h2><div class="tablewrap" id="bmTable"></div></div></section><section class="page" id="history"><h1>History &amp; Programs</h1><p class="lead">Your previous workout history is preserved. You can also export a backup here.</p><div class="card"><h2>Backup &amp; Restore</h2><p class="small">Data is saved locally in this browser. To transfer devices, export and import a JSON backup. There is no automatic cloud sync.</p><div class="actions"><button class="btn" id="backupBtn">⬇ Export backup (JSON)</button><button class="btn secondary" id="csvBtn">⬇ Export workout (CSV)</button><button class="btn secondary" id="importBtn">⬆ Import backup</button><input accept=".json,application/json" hidden="" id="fileInput" type="file"/></div></div><div class="pulse-card section"><h3>Your complete training journey</h3><div class="pulse-grid" id="lifetimeStats"></div><p class="small">Includes your Excel workout log and sessions completed in PULSEIRON. Training history starts on 04/02/2026.</p></div><div class="pulse-card section"><h3>Completed Workout History</h3><div class="tablewrap" id="completedSessionsTable"></div></div><div class="pulse-card section"><h3>Cyclical Time Progress</h3><svg class="chart" id="cyclicalTimeChart"></svg><div class="tablewrap" id="cyclicalTimesTable"></div><p class="small">Compare times only when rounds, exercises and rest intervals match.</p></div><div class="card section"><h2>Previous Workout Log</h2><div class="filters"><div class="field search"><label>SEARCH HISTORY</label><input id="historySearch" placeholder="Exercise, workout, date…"/></div></div><div class="small" id="historyCount"></div><div class="tablewrap" id="historyTable"></div></div><div class="twocol section"><div class="card"><h2>14-Day Challenge</h2><div class="tablewrap" id="challengeTable"></div></div><div class="card"><h2>Hypertrophy &amp; Cyclical Guide</h2><div id="guideList"></div></div></div></section>
+<section aria-hidden="true" class="page" id="library" style="display:none"><div class="pulse-hero"><span class="pulse-eyebrow">EXERCISES</span><h1>Exercise Library &amp; Instructions</h1><p class="lead">Find exercises, technique instructions and your personal best.</p><input aria-label="Search exercises" id="pulseLibrarySearch" placeholder="Search exercises..."/></div><div class="pulse-library" id="pulseLibrary"></div></section>
+<section class="page" id="piAccountPage"><h1>👤 <span data-pi-el="Προφίλ" data-pi-en="Profile">Profile</span></h1><p class="lead" id="piAccountSummary"></p><div class="card"><div class="actions"><button class="btn" id="piAccountEdit">✎ Edit profile</button><button class="btn secondary" id="piAccountTour">ⓘ Replay tutorial</button></div><p class="small" style="margin-top:12px">Backup / Import: available in the workout tools. Keep a JSON backup before switching versions.</p><button class="btn secondary" id="piAccountBackup" style="margin-top:8px">💾 Export JSON backup</button></div></section><p class="footer">PULSEIRON · Offline single-file workout app. Open the same HTML on your phone and computer. Data is stored locally and does not sync automatically. Export backups regularly.</p></main>
+<script>const SEED={"plan":[],"old":[],"challenge":[],"guide":[]};const STORAGE_KEY='pulseiron-clean-v4-iron-progress-v1';let rows=SEED.plan.map(x=>({...x}));try{const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');if(saved&&Array.isArray(saved.plan)&&saved.plan.length>0){rows=saved.plan;}}catch(e){}
+const $=id=>document.getElementById(id);const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const fmt=n=>Number.isFinite(n)?n.toLocaleString('el-GR',{maximumFractionDigits:1}):'—';const has=n=>n!==null&&n!==undefined&&n!==''&&Number.isFinite(Number(n));const uniq=a=>[...new Set(a)];const exercises=uniq(rows.map(r=>r.exercise)).sort((a,b)=>a.localeCompare(b));
+function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify({plan:rows}));$('saveStatus').textContent='✓ Saved on this device'}catch(e){$('saveStatus').textContent='⚠ Save unavailable — export backup'}}
+function setOptions(sel,items,selected,fn){sel.innerHTML=items.map(x=>`<option value="${esc(x.value)}">${esc(x.label)}</option>`).join('');if(selected!==undefined&&items.some(x=>String(x.value)===String(selected)))sel.value=selected;if(fn)sel.onchange=fn}
+function initWorkout(){
+ let last=null;try{last=JSON.parse(localStorage.getItem('pulseiron-clean-v4-pulseiron-last-workout-v1')||'null')}catch(e){}
+ if(!last){try{const c=JSON.parse(localStorage.getItem('pulseiron-clean-v4-pulseiron-completions-v1')||'{}');const a=Object.values(c).sort((x,y)=>String(y.completedAt||y.date).localeCompare(String(x.completedAt||x.date)));if(a.length)last={week:a[0].week,session:a[0].session}}catch(e){}}
+ setOptions($('week'),uniq(rows.map(x=>x.week)).sort((a,b)=>a-b).map(w=>({value:w,label:'Week '+w})),last?.week||1,updateSessions);
+ updateSessions();if(last?.session&&[...$('session').options].some(x=>Number(x.value)===Number(last.session)))$('session').value=last.session;renderWorkout();
+ }
+function updateSessions(){let w=Number($('week').value),old=$('session').value;let s=uniq(rows.filter(x=>x.week===w).map(x=>x.session)).sort((a,b)=>a-b);setOptions($('session'),s.map(x=>({value:x,label:'Session '+x})),old,renderWorkout);renderWorkout()}
+function isTimedExercise(r){
+ const target=String(r.targetReps||'');
+ const name=String(r.exercise||'');
+ return /\b(?:sec|secs|second|seconds)\b/i.test(target)
+  || /\b(?:hold|plank|wall sit|isometric)\b/i.test(name)
+  || /\b(?:hold|seconds|secs)\b/i.test(String(r.notes||''));
+}
+function renderWorkout(){const w=Number($('week').value),s=Number($('session').value);const list=rows.filter(r=>r.week===w&&r.session===s);$('workoutInfo').innerHTML=`<b>Week ${w} · Session ${s}</b> — ${esc(list[0]?.workout||'')} · ${list.length} exercises · <span class="pill">${list.filter(r=>has(r.reps)||has(r.kg)).length}/${list.length} entered</span>`;$('exerciseList').innerHTML=list.map((r,i)=>`<article class="exercise"><h3><span style="color:var(--gold)">${i+1}.</span> ${esc(r.exercise)}</h3><div class="meta">${esc(r.sets??'—')} sets · ${isTimedExercise(r)?'Seconds per set (plan): ':'Reps per set (plan): '}${esc(r.targetReps)}${has(r.targetOverrideReps)?' · Approved total reps: '+r.targetOverrideReps:''}${has(r.targetOverrideSeconds)?' · Approved total seconds: '+r.targetOverrideSeconds:''} · Total ${isTimedExercise(r)?'time':'reps'} goal: <b>${isTimedExercise(r)?'—':(Number(r.sets)>0 && /^\d+$/.test(String(r.targetReps||'').trim())) ? Number(r.sets)*Number(r.targetReps) : (Number(r.sets)>0 && /^\d+\s*[-–]\s*\d+$/.test(String(r.targetReps||'').trim()) ? `${Number(r.sets)*Number(String(r.targetReps).match(/^\d+/)[0])}–${Number(r.sets)*Number(String(r.targetReps).match(/\d+$/)[0])}` : '—')}</b> · Rest: ${esc(r.rest)}<br>Target: <b style="color:var(--gold)">${esc(has(r.targetOverrideKg)?fmt(r.targetOverrideKg)+' kg (approved)':r.targetKg||'—')}</b> · ${esc(r.loadType)}</div><div class="editrow"><div class="field"><label>ACTUAL KG</label><input inputmode="decimal" type="number" step="0.5" min="0" data-id="${r.id}" data-key="kg" value="${r.kg??''}" placeholder="kg"></div><div class="field"><label>${isTimedExercise(r)?'TOTAL SECONDS — ALL SETS COMBINED':'TOTAL REPS — ALL SETS COMBINED'}</label><input inputmode="numeric" type="number" step="1" min="0" data-id="${r.id}" data-key="reps" value="${r.reps??''}" placeholder="${isTimedExercise(r)?'e.g. 105 seconds':'e.g. 36'}"></div></div><div class="small" style="margin-top:7px">${isTimedExercise(r)?'Enter total hold duration in seconds across all sets.':'Enter the combined reps from all sets once. No per-set logging required.'}</div><div class="note field"><label>NOTES</label><input data-id="${r.id}" data-key="notes" value="${esc(r.notes)}" placeholder="How did the exercise go?"></div><div class="small" style="margin-top:8px">${esc(r.technique)}</div></article>`).join('');$('exerciseList').querySelectorAll('input').forEach(el=>el.addEventListener('change',e=>{let r=rows.find(x=>x.id===Number(e.target.dataset.id)),key=e.target.dataset.key;r[key]=key==='notes'?e.target.value:e.target.value===''?null:Number(e.target.value);save();renderDashboard();renderStrength();renderReview()}))}
+function table(headers,data){return `<table><thead><tr>${headers.map(x=>`<th>${esc(x)}</th>`).join('')}</tr></thead><tbody>${data.map(row=>`<tr>${row.map(v=>`<td>${esc(v)}</td>`).join('')}</tr>`).join('')}</tbody></table>`}
+function stat(label,value){return `<div class="card"><div class="small">${esc(label)}</div><div class="stat">${esc(value)}</div></div>`}
+function chart(id,points,unit=''){const el=$(id),W=600,H=250,L=52,R=16,T=18,B=35;el.setAttribute('viewBox',`0 0 ${W} ${H}`);const vals=points.map(p=>p.y).filter(has).map(Number);if(!vals.length){el.innerHTML='<text x="300" y="125" text-anchor="middle" fill="#9eafc2" font-size="15">No recorded data yet</text>';return}const ymax=Math.max(1,...vals)*1.12,plotW=W-L-R,plotH=H-T-B;const x=i=>L+(points.length===1?plotW/2:i*plotW/(points.length-1)),y=v=>T+plotH-Number(v)/ymax*plotH;let out='';for(let j=0;j<=4;j++){let v=ymax*j/4,yy=y(v);out+=`<line x1="${L}" y1="${yy}" x2="${W-R}" y2="${yy}" stroke="#35465c" stroke-dasharray="4 4"/><text x="${L-8}" y="${yy+4}" fill="#9eafc2" font-size="11" text-anchor="end">${fmt(v)}</text>`}let segments=[],segment=[];points.forEach((p,i)=>{if(has(p.y))segment.push(`${x(i)},${y(p.y)}`);else if(segment.length){segments.push(segment);segment=[]}});if(segment.length)segments.push(segment);out+=segments.map(s=>`<polyline points="${s.join(' ')}" fill="none" stroke="#e9b85a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`).join('');points.forEach((p,i)=>{out+=`<text x="${x(i)}" y="${H-10}" text-anchor="middle" font-size="11" fill="#9eafc2">${esc(p.label)}</text>`;if(has(p.y))out+=`<circle cx="${x(i)}" cy="${y(p.y)}" r="4.5" fill="#e9b85a"><title>${esc(p.label)}: ${fmt(Number(p.y))} ${esc(unit)}</title></circle>`});el.innerHTML=out}
+function renderDashboard(){let weeks=uniq(rows.map(r=>r.week)).sort((a,b)=>a-b);let totals=weeks.map(w=>{let a=rows.filter(r=>r.week===w),logged=a.filter(r=>has(r.reps)||has(r.kg)),weighted=a.filter(r=>has(r.kg)&&has(r.reps));return {w,logged:logged.length,total:a.length,volume:weighted.length?weighted.reduce((s,r)=>s+r.kg*r.reps,0):null,reps:a.some(r=>has(r.reps))?a.reduce((s,r)=>s+(Number(r.reps)||0),0):null}});let logged=rows.filter(r=>has(r.kg)||has(r.reps)),weights=rows.filter(r=>has(r.kg)&&has(r.reps));$('stats').innerHTML=stat('Exercises logged',`${logged.length} / ${rows.length}`)+stat('Workout sessions',uniq(logged.map(r=>r.week+'-'+r.session)).length)+stat('Total volume',fmt(weights.reduce((s,r)=>s+r.kg*r.reps,0))+' kg')+stat('Exercises in plan',exercises.length);chart('volumeChart',totals.map(t=>({label:'W'+t.w,y:t.volume})),'kg');chart('repsChart',totals.map(t=>({label:'W'+t.w,y:t.reps})),'reps');$('weeklyTable').innerHTML=table(['Week','Logged / Total','Volume (kg)','Total reps'],totals.map(t=>['W'+t.w,t.logged+' / '+t.total,t.volume===null?'—':fmt(t.volume),t.reps===null?'—':fmt(t.reps)]))}
+function renderStrength(){let ex=$('exerciseSelect').value;let a=rows.filter(r=>r.exercise===ex).sort((x,y)=>x.week-y.week||x.session-y.session);let points=a.map(r=>({label:'W'+r.week+(a.filter(z=>z.week===r.week).length>1?' S'+r.session:''),kg:r.kg,reps:r.reps,vol:has(r.kg)&&has(r.reps)?r.kg*r.reps:null}));let valid=a.filter(r=>has(r.kg));let best=valid.length?Math.max(...valid.map(r=>r.kg)):null;let last=valid.length?valid[valid.length-1].kg:null;let count=a.filter(r=>has(r.kg)||has(r.reps)).length;let vol=a.filter(r=>has(r.kg)&&has(r.reps)).reduce((s,r)=>s+r.kg*r.reps,0);$('strengthStats').innerHTML=stat('Best weight',best===null?'—':fmt(best)+' kg')+stat('Last weight',last===null?'—':fmt(last)+' kg')+stat('Recorded sessions',count)+stat('Total volume',fmt(vol)+' kg');chart('weightChart',points.map(p=>({label:p.label,y:p.kg})),'kg');chart('exerciseRepsChart',points.map(p=>({label:p.label,y:p.reps})),'reps');chart('exerciseVolumeChart',points.map(p=>({label:p.label,y:p.vol})),'kg');$('exerciseTable').innerHTML=table(['Week','Session','Target','Actual kg','Actual reps','Volume'],a.map(r=>['W'+r.week,'S'+r.session,has(r.targetOverrideKg)?fmt(r.targetOverrideKg)+' kg':r.targetKg,r.kg??'—',r.reps??'—',has(r.kg)&&has(r.reps)?fmt(r.kg*r.reps):'—']))}
+function initStrength(){setOptions($('exerciseSelect'),exercises.map(x=>({value:x,label:x})),exercises.includes('Barbell Bench Press')?'Barbell Bench Press':exercises[0],renderStrength);renderStrength()}
+function renderHistory(){let q=$('historySearch').value.toLowerCase(),a=SEED.old.filter(r=>Object.values(r).some(v=>String(v).toLowerCase().includes(q)));$('historyCount').textContent=`${a.length} historical entries`;$('historyTable').innerHTML=table(['Date','Workout','Exercise','Kg','Reps','Notes'],a.slice(0,250).map(r=>[r.date,r.workout,r.exercise,r.kg,r.reps,r.notes]));$('challengeTable').innerHTML=table(['Date','Day','Program','Status'],SEED.challenge.map(r=>[r.A,r.B,r.C,r.E]));$('guideList').innerHTML=SEED.guide.map(g=>`<div class="guide"><strong>${esc(g.topic)}</strong><div class="small">${esc(g.detail)}</div></div>`).join('')}
+function download(name,content,type){const a=document.createElement('a'),blob=new Blob([content],{type});a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+$('backupBtn').onclick=()=>download('iron-progress-backup.json',JSON.stringify({format:'pulseiron-clean-v4-iron-progress-v1',exportedAt:new Date().toISOString(),plan:rows},null,2),'application/json');$('csvBtn').onclick=()=>{let keys=['date','week','session','workout','exercise','sets','targetReps','targetKg','targetOverrideKg','kg','reps','notes'];let csv=[keys,...rows.map(r=>keys.map(k=>r[k]??''))].map(a=>a.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\r\n');download('iron-progress-workouts.csv','\ufeff'+csv,'text/csv;charset=utf-8')};$('importBtn').onclick=()=>$('fileInput').click();$('fileInput').onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let obj=JSON.parse(await f.text());if(!Array.isArray(obj.plan)||obj.plan.length===0||!obj.plan.every(r=>r&&Number.isFinite(Number(r.week))&&Number.isFinite(Number(r.session))&&typeof r.exercise==='string'))throw Error('Backup does not match this workout plan');if(!confirm('Replace the current workout entries with this backup?'))return;rows=obj.plan;save();renderWorkout();renderDashboard();renderStrength();renderReview();alert('Backup imported successfully')}catch(err){alert('Import failed: '+err.message)}e.target.value=''};
+
+// Review operates only on completed rows, never silently alters targets.
+function reviewWeeks(){return uniq(rows.map(r=>r.week)).sort((a,b)=>a-b).filter(w=>w<Math.max(...rows.map(r=>r.week)))}
+function initReview(){setOptions($('reviewWeek'),reviewWeeks().map(w=>({value:w,label:'Week '+w})),1,updateReviewSessions);updateReviewSessions();$('reviewExport').onclick=exportReview}
+function updateReviewSessions(){const w=Number($('reviewWeek').value),s=uniq(rows.filter(r=>r.week===w).map(r=>r.session)).sort((a,b)=>a-b);setOptions($('reviewSession'),s.map(n=>({value:n,label:'Session '+n})),s[0],renderReview);renderReview()}
+function maxTargetReps(r){const nums=String(r.targetReps||'').match(/\d+/g);return nums?Number(nums[nums.length-1]):null}
+function getReviewRows(){let w=Number($('reviewWeek').value),s=Number($('reviewSession').value);return rows.filter(r=>r.week===w&&r.session===s)}
+function nextMatch(r){return rows.find(n=>n.week===r.week+1&&n.session===r.session&&n.exercise===r.exercise)||rows.find(n=>n.week===r.week+1&&n.exercise===r.exercise)||null}
+function activeTrainingMode(){return document.getElementById('trainingMode')?.value||'heavy'}
+function reviewTargetNumber(v){
+ const nums=String(v??'').replace(/,/g,'.').match(/\d+(?:\.\d+)?/g);
+ if(!nums||!nums.length)return NaN;
+ return Math.max(...nums.map(Number).filter(Number.isFinite));
+}
+function reviewProposal(r){
+ const next=nextMatch(r),mode=activeTrainingMode();
+ const weight=Number(r.kg),total=Number(r.reps),sets=Number(r.sets);
+ const timed=/\bsec(?:onds)?\b|\bhold\b/i.test(String(r.targetReps||'')+' '+r.exercise);
+ if(!has(r.reps)||!Number.isFinite(total)||total<=0||!Number.isFinite(sets)||sets<=0)return null;
+ // Notes are interpreted alongside the exercise's recent history, not as a one-off command.
+ // Detect negation before interpreting pain, e.g. "no pain" must not trigger a pain warning.
+ const recent=rows.filter(x=>x.exercise===r.exercise&&x.id!==r.id&&
+   (Number(x.week)<Number(r.week)||(Number(x.week)===Number(r.week)&&Number(x.session)<Number(r.session))))
+   .sort((a,b)=>Number(b.week)-Number(a.week)||Number(b.session)-Number(a.session)).slice(0,3);
+ const notes=String(r.notes||'').toLowerCase();
+ function noteFlags(raw){
+   const t=String(raw||'').toLowerCase();
+   const clean=t.replace(/\b(?:no|without|zero|none)\s+(?:signs?\s+of\s+)?(?:pain|discomfort|injury)\b/g,'')
+     .replace(/(?:χωρίς|διχως)\s+(?:καθόλου\s+)?(?:πόνο|πονο|ενόχληση|ενοχληση)/g,'');
+   const caution=/\bpain\b|\binjur|\bdiscomfort\b|\bsharp\b|\bunsafe\b|πόνο|πονο|τραυμα|ενόχλησ|ενοχλησ/.test(clean);
+   const hard=/\bhard\b|\bfailed\b|\bfailure\b|\bpoor form\b|\bbad form\b|\bstruggl|δύσκολ|δυσκολ|κακή τεχνική/.test(clean);
+   const easy=/\bvery easy\b|\beasy\b|\blight\b|\bcomfortable\b|\beffortless\b|\bclean reps\b|\bgood form\b|\bcould do more\b|\brir\s*[3-9]\b|εύκολ|ευκολ/.test(clean);
+   return {caution,hard,easy};
+ }
+ const currentNotes=noteFlags(notes);
+ const pastNotes=recent.map(x=>noteFlags(x.notes));
+ const caution=currentNotes.caution;
+ const hard=currentNotes.hard||pastNotes.slice(0,2).filter(x=>x.hard).length===2;
+ const consistentEasy=currentNotes.easy&&pastNotes.slice(0,2).length===2&&pastNotes.slice(0,2).every(x=>x.easy);
+ const easy=currentNotes.easy;
+ const notesConfidence=consistentEasy?'Consistently easy across three sessions.':
+   currentNotes.easy?'Latest notes indicate manageable effort.':
+   currentNotes.hard?'Latest notes indicate difficult execution.':
+   currentNotes.caution?'Pain or discomfort reported; no automatic progression.':
+   !notes.trim()?'No effort notes supplied; suggestion is conservative.':'Notes reviewed alongside recent performance.';
+ const name=String(r.exercise||'').toLowerCase(),load=String(r.loadType||'').toLowerCase();
+ const dumbbell=/\bdb\b|dumbbell/.test(name+' '+load);
+ const isolation=/curl|raise|extension|kickback|fly|tricep|calf|lateral/.test(name);
+ const bodyweight=/\bbw\b|bodyweight/.test(load+' '+String(r.targetKg||''));
+ const upper=maxTargetReps(r),perSet=total/sets;
+ const programmed=next?reviewTargetNumber(has(next.targetOverrideKg)?next.targetOverrideKg:next.targetKg):NaN;
+ // Evaluate the actual program prescription and next-week phase alongside exercise and performance.
+ const nextPrescription=next?maxTargetReps(next):null;
+ const plannedLoadChange=Number.isFinite(programmed)&&Number.isFinite(weight)&&weight>0?(programmed-weight)/weight:0;
+ const plannedRepChange=Number.isFinite(nextPrescription)&&Number.isFinite(upper)?nextPrescription-upper:0;
+ const nextWeek=Number(next?.week||r.week+1);
+ const phaseRecovery=/deload|recovery|active rest/i.test(String(next?.workout||'')+' '+String(next?.notes||''));
+ const baseline=Math.max(Number.isFinite(weight)?weight:0,Number.isFinite(programmed)?programmed:0);
+ const goal=Number.isFinite(upper)?upper:Math.ceil(perSet);
+ const completion=goal>0?perSet/goal:1;
+ const achieved=completion>=1;
+ const gap=Math.max(0,Math.ceil((goal-perSet)*sets));
+ const last=rows.filter(x=>x.exercise===r.exercise&&x.id!==r.id&&has(x.reps)&&Number(x.reps)>0&&Number(x.week)<=Number(r.week)).sort((a,b)=>Number(b.week)-Number(a.week)||Number(b.session)-Number(a.session))[0];
+ const prior=last&&Number(last.sets)>0?Number(last.reps)/Number(last.sets):NaN;
+ const improvement=Number.isFinite(prior)?perSet-prior:0;
+ let kind='hold',suggest=Math.ceil(baseline),reason='Maintain the target and focus on good technique.',unit='kg';
+ if(timed){
+  kind='seconds';unit='seconds';
+  const previous=next&&has(next.targetOverrideSeconds)?Number(next.targetOverrideSeconds):total;
+  const perSetStep=caution||hard?0:easy?10:improvement>0?8:completion<0.9?3:5;
+  const modeScale=mode==='strength'?0.5:mode==='cutting'?0.8:mode==='extreme'?1.2:1;
+  const delta=Math.round(perSetStep*sets*modeScale);
+  suggest=Math.round(Math.max(total,previous)+delta);
+  reason=delta?`Add ${delta} total seconds (${Math.round(delta/sets)} per set) while maintaining technique.`:'Keep duration steady until the hold is comfortable.';
+ }else{
+  const eligible=achieved&&!caution&&!hard&&Number.isFinite(weight)&&weight>0&&!bodyweight;
+  const deload=phaseRecovery;
+  // The training mode changes priorities, but never forces a particular unit of progression.
+  // Rep headroom, recent progress, perceived effort and exercise characteristics decide the action.
+  const bias={strength:0.20,power:0.15,heavy:0.09,classic:0.04,upper:0.02,ppl:0.02,
+              recomp:-0.08,cutting:-0.13,extreme:-0.05,full:-0.07}[mode]||0;
+  const headroom=Number.isFinite(upper)?Math.max(0,upper-perSet):0;
+  const progressionScore=bias+(consistentEasy?0.26:easy?0.12:0)+(improvement>=1?0.11:improvement<0?-0.12:0)
+      +(completion>=1.18?0.13:completion>=1?0.04:-0.28)
+      +(headroom>0?-0.20:0)+(isolation?-0.09:0)+(dumbbell?-0.03:0)
+      +(plannedLoadChange>0.02?0.06:plannedLoadChange<0?-0.07:0)
+      +(plannedRepChange>0?-0.12:plannedRepChange<0?0.04:0)
+      +(Number.isFinite(prior)&&improvement<0?-0.08:0);
+  const chooseWeight=eligible&&!deload&&progressionScore>=0.16&&(!Number.isFinite(nextPrescription)||perSet>=nextPrescription);
+  if(chooseWeight){
+   kind='kg';unit='kg';
+   const effortMultiplier=consistentEasy?1.20:easy?1.05:1;
+   const progressMultiplier=improvement>0?1.12:improvement<0?0.78:1;
+   const magnitude=Math.max(0.005,Math.min(0.075,
+     (0.018+Math.max(0,progressionScore)*0.065)*effortMultiplier*progressMultiplier));
+   const rawStep=weight*magnitude*(isolation?0.65:1);
+   // Whole kilograms only. Keep weekly jumps conservative; if the programmed
+   // load already jumps too far, recommend reps rather than compounding it.
+   const maxReasonableJump=Math.max(1,Math.min(3,Math.floor(weight*0.035)));
+   const stepKg=Math.max(1,Math.min(maxReasonableJump,Math.round(rawStep)));
+   const roundedCurrent=Math.ceil(weight);
+   const roundedPlan=Number.isFinite(programmed)?Math.ceil(programmed):roundedCurrent;
+   if(roundedPlan-roundedCurrent>maxReasonableJump){
+     kind='reps';unit='total reps';
+     const previous=next&&has(next.targetOverrideReps)?Number(next.targetOverrideReps):total;
+     suggest=Math.round(Math.max(total,previous)+Math.max(1,Math.min(sets,Math.round(sets*0.6))));
+     reason=`${mode}: the next planned load jumps too far for one session. Keep the current load and build reps before adding weight.`;
+   }else{
+     suggest=Math.max(roundedCurrent+stepKg,roundedPlan);
+     reason=`${mode}: rep goal achieved with sufficient performance margin. Suggested ${suggest-roundedCurrent} kg increase, in whole kilograms, based on performance and equipment practicality.`;
+   }
+  }else{
+   kind='reps';unit='total reps';
+   const previous=next&&has(next.targetOverrideReps)?Number(next.targetOverrideReps):total;
+   const nextRepCeiling=Number.isFinite(nextPrescription)?nextPrescription:upper;
+   const repMargin=Math.max(0,Number.isFinite(nextRepCeiling)?nextRepCeiling*sets-total:sets);
+   const momentum=improvement>0?Math.min(3,Math.ceil(improvement*sets/2)):0;
+   const comfort=consistentEasy?Math.ceil(sets*0.9):easy?1:0;
+   const modeFactor=mode==='cutting'?1.12:mode==='extreme'?1.10:mode==='recomp'?1.05:mode==='strength'?0.70:1;
+   let delta=0;
+   if(!caution&&!hard&&!deload){
+    delta=Math.max(1,Math.round((sets*0.55+momentum+comfort)*modeFactor));
+    if(repMargin>0)delta=Math.min(delta,Math.max(1,Math.ceil(repMargin)));
+    delta=Math.min(delta,Math.max(1,sets*3));
+   }
+   suggest=Math.round(Math.max(total,previous)+delta);
+   reason=delta?`${mode}: ${eligible?'build more reps before increasing load':'work toward the prescribed rep range'}; suggested +${delta} total reps at the current weight.`:
+     (caution?'Pain or injury note: do not increase the target automatically.':deload?'Planned deload: no automatic progression.':'Maintain the target until technique and recovery improve.');
+  }
+
+ }
+ const prescriptionWarning=Number.isFinite(programmed)&&Number.isFinite(weight)&&weight>programmed
+  ?`The next-week plan lists ${programmed} kg, below your logged ${weight} kg; the plan value is a reference, not a recommendation to lower your achieved load. `:'';
+ if((caution||hard||phaseRecovery)&&kind!=='hold'){kind='hold';unit=timed?'seconds':'total reps';suggest=total;reason=caution?'Pain or discomfort noted. Keep the current performance target; no progression is recommended.':phaseRecovery?'Recovery phase: maintain the current target.':'Difficult effort reported. Maintain the current target and improve execution before progressing.';}
+ const decisionExplanation=caution?'Decision: safety hold because the current notes mention pain or discomfort. ':hard?'Decision: hold because the notes indicate hard effort or poor execution. ':'';
+ return {next,kind,unit,suggest,reason:prescriptionWarning+decisionExplanation+reason+' '+notesConfidence+' Evaluated against the next-week prescription and recent performance.',baseline,timed,weight,sets,total};
+}
+function renderReview(){
+ const a=getReviewRows(),w=Number($('reviewWeek').value),s=Number($('reviewSession').value);
+ $('reviewSummary').innerHTML=`<b>Week ${w} · Session ${s} → Week ${w+1}</b><div class="small">${a.filter(r=>has(r.reps)).length}/${a.length} exercises with logged results · Approve each suggestion separately</div>`;
+ $('reviewList').innerHTML=a.map(r=>{
+  const p=reviewProposal(r),next=p?.next;
+  const approved=next&&p&&p.kind!=='hold'&&(p.kind==='kg'?has(next.targetOverrideKg):p.kind==='reps'?has(next.targetOverrideReps):has(next.targetOverrideSeconds));
+  const current=approved?(p.kind==='kg'?next.targetOverrideKg:p.kind==='reps'?next.targetOverrideReps:next.targetOverrideSeconds):p?.suggest;
+  const programmed=next?(has(next.targetOverrideKg)?next.targetOverrideKg:next.targetKg):'Exercise not scheduled in Week '+(Number(r.week)+1);
+  const timed=p?.timed||/\bsec(?:onds)?\b|\bhold\b/i.test(String(r.targetReps||'')+' '+String(r.exercise||''));
+  return `<article class="exercise"><h3>${esc(r.exercise)}</h3><div class="meta">W${w} · ${esc(r.sets)} sets · ${timed?'Target duration':'Target reps'} ${esc(r.targetReps)}<br>Actual: <b>${has(r.kg)?fmt(r.kg)+' kg':(/\bbodyweight\b|\bbw\b/i.test(String(r.loadType||'')+' '+String(r.targetKg||''))?'Bodyweight (not logged)':'Not logged')}</b> · <b>${has(r.reps)?fmt(r.reps)+(timed?' total seconds':' total reps'):'—'}</b><br>Next programmed load: ${esc(programmed)}</div>${p?`<p class="small">${esc(p.reason)}</p><p class="small"><b>Workout notes:</b> ${esc(r.notes||'No notes entered')}</p>${p.kind==='reps'&&has(r.kg)?`<p class="small"><b>Weight for this rep suggestion:</b> keep ${fmt(r.kg)} kg (approving reps also saves this weight for next week).</p>`:''}${p.kind==='hold'?`<div class="status">MAINTAIN TARGET — ${p.timed?`${p.total} total seconds`:`${has(r.kg)?fmt(r.kg)+' kg · ':''}${p.total} total reps`}. No approval needed; no new target is written.</div>`:`<div class="field"><label>PROPOSED ${p.kind==='kg'?'WEIGHT':p.kind==='reps'?'TOTAL REPS':'TOTAL SECONDS'} FOR WEEK ${w+1} (${esc(p.unit)})</label><input type="number" min="0" step="1" inputmode="decimal" id="proposal-${r.id}" value="${current}"></div><div class="actions" style="margin-top:10px">${next?`<button class="btn" data-apply="${r.id}">✓ Approve ${p.kind==='kg'?'weight':p.kind==='reps'?'reps':'seconds'} target</button>`:'Exercise not scheduled in Week '+(Number(r.week)+1)}</div>${approved?`<div class="status">✓ Approved: ${current} ${p.unit}</div>`:''}`}`:'<p class="small">Log a valid result to receive a suggestion.</p>'}</article>`;
+ }).join('');
+ $('reviewList').querySelectorAll('[data-apply]').forEach(b=>b.onclick=()=>{
+  const r=rows.find(x=>x.id===Number(b.dataset.apply)),p=reviewProposal(r);
+  const v=Number($('proposal-'+r.id).value);
+  if(!p||p.kind==='hold'||!p.next||!Number.isFinite(v)||v<=0){alert('Enter a valid target.');return}
+  if(p.kind==='kg'){
+   if(!Number.isInteger(v)||v<p.baseline){alert('Weight cannot be lower than the current recorded or programmed load.');return}
+   p.next.targetOverrideKg=v;
+  }else if(p.kind==='reps'){
+   if(!Number.isInteger(v)||v<p.total){alert('Enter whole total reps, at least the current achieved total.');return}
+   p.next.targetOverrideReps=v;
+   if(has(r.kg)&&Number(r.kg)>0)p.next.targetOverrideKg=Math.max(Number(r.kg),Number(p.next.targetOverrideKg)||0);
+  }else{
+   if(!Number.isInteger(v)||v<p.total){alert('Enter whole seconds, at least the current achieved duration.');return}
+   p.next.targetOverrideSeconds=v;
+  }
+  save();renderReview();renderWorkout();renderStrength();
+ });
+}
+function exportReview(){const w=Number($('reviewWeek').value),s=Number($('reviewSession').value);const lines=[`IRON PROGRESS — WEEKLY REVIEW`,`Week ${w}, Session ${s}`,`Exported: ${new Date().toLocaleString()}`,''];getReviewRows().forEach(r=>{const p=reviewProposal(r);lines.push(`${r.exercise} | ${r.sets} sets × ${r.targetReps} reps | actual ${has(r.kg)?r.kg:'—'} kg, ${has(r.reps)?r.reps:'—'} total reps | ${p?'suggested '+p.suggest+' '+p.unit:'insufficient data'} | approved ${p&&p.next?(p.kind==='kg'?p.next.targetOverrideKg:p.kind==='reps'?p.next.targetOverrideReps:p.next.targetOverrideSeconds)??'—':'—'}`)});lines.push('','Review technique, RIR, recovery and pain before changing targets.');download(`iron-progress-week-${w}-session-${s}-review.txt`,lines.join('\n'),'text/plain;charset=utf-8')}
+
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab,.page').forEach(x=>x.classList.remove('active'));b.classList.add('active');$(b.dataset.tab).classList.add('active')});$('historySearch').oninput=renderHistory;
+const trainingModeSelect=$('trainingMode');
+try{trainingModeSelect.value=localStorage.getItem('pulseiron-clean-v4-training-mode-v1')||'heavy'}catch(e){}
+trainingModeSelect.onchange=()=>{try{localStorage.setItem('pulseiron-clean-v4-training-mode-v1',trainingModeSelect.value)}catch(e){}renderReview()};
+if(rows.length){
+ initWorkout();initStrength();initReview();renderDashboard();renderHistory();
+}else{
+ const status=$('saveStatus');if(status)status.textContent='Ready for your first workout';
+ const info=$('workoutInfo');if(info)info.textContent='No workout program yet. Create one in Find Program.';
+ const list=$('exerciseList');if(list)list.innerHTML='';
+ const stats=$('stats');if(stats)stats.innerHTML=stat('Exercises logged','0')+stat('Workout sessions','0')+stat('Total volume','0 kg');
+ const review=$('reviewList');if(review)review.innerHTML='<p>Create a program to begin your training review.</p>';
+ const count=$('historyCount');if(count)count.textContent='0 historical entries';
+}
+</script><script>if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) { window.addEventListener("load",()=>navigator.serviceWorker.register("./service-worker.js").catch(()=>{})); }</script><script>
+(function(){
+const el=id=>document.getElementById(id), uniq2=a=>[...new Set(a)], num=x=>Number(x)||0, recorded=r=>r.kg!==null&&r.kg!==''&&Number.isFinite(Number(r.kg))&&Number(r.kg)>0;
+const palette=['#00bfff','#b4f000','#ae65ff','#ffa900','#f34596','#20c8ae'];
+function navigate(id){document.querySelectorAll('.tab,.page').forEach(x=>x.classList.remove('active'));document.querySelector('[data-tab="'+id+'"]').classList.add('active');el(id).classList.add('active');window.scrollTo({top:0,behavior:'instant'});}
+let overviewWeekIndex=null,overviewWeekTotal=8;
+function changeOverviewWeek(delta){overviewWeekIndex=Math.max(0,Math.min(overviewWeekTotal-1,(overviewWeekIndex||0)+delta));progress();}
+function overviewWeekControls(){
+ const calendar=el('pulseCalendar');if(!calendar)return;
+ let bar=el('pulseWeekNav');if(!bar){bar=document.createElement('div');bar.id='pulseWeekNav';bar.className='pulse-week-nav';calendar.parentNode.insertBefore(bar,calendar);}
+ const lang=true;
+ bar.innerHTML='<button type="button" id="pulsePrevWeek" '+(overviewWeekIndex===0?'disabled':'')+'>‹ '+(lang?'Previous':'Previous')+'</button><strong>'+(lang?'Week ':'Week ')+(overviewWeekIndex+1)+' / '+overviewWeekTotal+'</strong><button type="button" id="pulseNextWeek" '+(overviewWeekIndex>=overviewWeekTotal-1?'disabled':'')+'>'+(lang?'Next':'Next')+' ›</button>';
+ el('pulsePrevWeek').onclick=()=>changeOverviewWeek(-1);
+ el('pulseNextWeek').onclick=()=>changeOverviewWeek(1);
+}
+function progress(){
+ if(!rows.length){
+   const cal=el('pulseCalendar');
+   if(cal)cal.innerHTML='<div class="pulse-cal-rest" style="padding:18px">No workouts yet. Create your first program in Find Program.</div>';
+   const chartIds=['pulseMuscles','pulseCalendar','pulseVolume','pulseStats'];
+   for(const id of chartIds){const node=el(id);if(node&&id!=='pulseCalendar')node.innerHTML='';}
+   return;
+ }
+let r=rows.filter(recorded),groups={};r.forEach(x=>{let k=x.workout;groups[k]=(groups[k]||0)+num(x.kg)*num(x.reps)});let max=Math.max(1,...Object.values(groups));el('pulseVolumes').innerHTML=Object.entries(groups).map(([name,v],i)=>'<div><div class="pulse-row"><span>'+esc(name)+'</span><strong>'+Math.round(v).toLocaleString('el-GR')+' kg</strong></div><div class="pulse-progress"><div style="width:'+Math.min(100,v/max*100)+'%;background:'+palette[i%palette.length]+'"></div></div></div>').join('')||'<p class="pulse-muted">Δεν υπάρχουν καταχωρίσεις ακόμη.</p>';
+let cat={Chest:0,Back:0,Legs:0,Shoulders:0,Arms:0,Core:0};let classify=n=>/bench|press|pullover|push up|squeeze/i.test(n)?'Chest':/row|pull/i.test(n)?'Back':/squat|deadlift|lunge|thrust|calf/i.test(n)?'Legs':/lateral|arnold|raise|ohp|tate/i.test(n)?'Shoulders':/curl|tricep|bicep/i.test(n)?'Arms':'Core';r.forEach(x=>{cat[classify(x.exercise)]+=num(x.sets)});let top=Math.max(1,...Object.values(cat));el('pulseMuscles').innerHTML=Object.entries(cat).map(([k,v],i)=>'<div><div class="pulse-row"><span style="color:'+palette[i]+'">● '+k+'</span><strong>'+v+' σετ</strong></div><div class="pulse-progress"><div style="width:'+v/top*100+'%;background:'+palette[i]+'"></div></div></div>').join('');
+let dates=uniq2(r.map(x=>x.date)).filter(Boolean),active=new Set(dates);
+const planned=new Map(),originalDays=[...new Set(SEED.plan.map(x=>x.date).filter(Boolean))].sort();
+const firstDay=originalDays[0],lastDay=originalDays[originalDays.length-1];
+const addDays=(iso,n)=>{const dt=new Date(iso+'T12:00:00');dt.setDate(dt.getDate()+n);return dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-'+String(dt.getDate()).padStart(2,'0')};
+const sessionKeys=[...new Set(rows.map(x=>x.week+'|'+x.session))];
+sessionKeys.forEach(k=>{const [w,sn]=k.split('|').map(Number),x=rows.find(z=>z.week===w&&z.session===sn);if(!x)return;const d=x.scheduledDate||x.date;if(!planned.has(d))planned.set(d,[]);planned.get(d).push({w,sn,name:x.workout,original:x.date,done:!!(typeof allCompleted==='function'&&allCompleted()[w+'-'+sn])})});
+const start=firstDay, end=addDays(lastDay,6);
+const totalDays=Math.max(7,Math.round((new Date(end+'T12:00:00')-new Date(start+'T12:00:00'))/86400000)+1);
+overviewWeekTotal=Math.max(1,Math.ceil(totalDays/7));
+if(overviewWeekIndex===null){const now=new Date(),today=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');overviewWeekIndex=today>=start&&today<=end?Math.min(overviewWeekTotal-1,Math.floor((new Date(today+'T12:00:00')-new Date(start+'T12:00:00'))/86400000/7)):0;}
+overviewWeekIndex=Math.max(0,Math.min(overviewWeekTotal-1,overviewWeekIndex));
+const visibleStart=addDays(start,overviewWeekIndex*7),visibleEnd=addDays(visibleStart,6);
+let cells=[],count=0;
+for(let key=visibleStart,dayIndex=0;dayIndex<7&&key<=visibleEnd;key=addDays(key,1),dayIndex++){
+ const dt=new Date(key+'T12:00:00'),workouts=planned.get(key)||[],inPlan=key>=firstDay&&key<=lastDay;
+ if(workouts.length)count++;
+ const names=workouts.map(x=>'<div class="pulse-cal-name">'+(x.done?'✓ ':'')+esc(x.name)+'</div>').join('');
+ const label=workouts.length?names:(inPlan?'<div class="pulse-cal-rest">REST</div>':'<div class="pulse-cal-rest">—</div>');
+ const moved=workouts.some(x=>x.original!==key);
+ cells.push('<div class="pulse-day '+(active.has(key)?'hit ':'')+(workouts.length?'planned ':'')+(moved?'rescheduled':'')+'" title="'+key+'"><div>'+['SUN','MON','TUE','WED','THU','FRI','SAT'][dt.getDay()]+'</div><strong>'+dt.getDate()+'/'+(dt.getMonth()+1)+'</strong>'+label+'</div>');
+}
+el('pulseActiveDays').textContent=count+' / 7 '+(true?'training days':'training days');
+el('pulseCalendar').innerHTML=cells.join('');overviewWeekControls();
+let best={};r.forEach(x=>{if(!best[x.exercise]||num(x.kg)>num(best[x.exercise].kg))best[x.exercise]=x});el('pulseHall').innerHTML=Object.values(best).sort((a,b)=>b.kg-a.kg).slice(0,12).map(x=>'<div class="pulse-pr"><span class="pulse-eyebrow">PERSONAL BEST</span><strong>'+esc(x.exercise)+'</strong><b>'+x.kg+' kg</b><div><small>'+esc(x.date)+' · '+num(x.reps)+' total reps</small></div><button class="pulse-action" style="margin-top:12px" data-open-ex="'+esc(x.exercise)+'">View Chart ↗</button></div>').join('');el('pulseHall').querySelectorAll('[data-open-ex]').forEach(b=>b.onclick=()=>openExercise(b.dataset.openEx));
+}
+function openExercise(ex){
+  const select=el('exerciseSelect');
+  if(select)select.value=ex;
+  renderStrength();
+  if(typeof window.piGoSection==='function')window.piGoSection('strength');
+  else navigate('strength');
+}
+function templates(){let sessions=uniq2(rows.filter(x=>x.week===1).map(x=>x.session)).sort((a,b)=>a-b);if(!el('pulseTemplates'))return;el('pulseTemplates').innerHTML=sessions.map(s=>{let list=rows.filter(x=>x.week===1&&x.session===s),name=list[0]?.workout||'Session '+s;return '<div class="pulse-card"><span class="pulse-eyebrow">SESSION '+s+'</span><h3 style="margin-top:10px">'+esc(name)+'</h3><ul class="pulse-exlist">'+list.map(x=>'<li><strong>'+esc(x.exercise)+'</strong><span>'+x.sets+' σετ × '+esc(x.targetReps)+'</span></li>').join('')+'</ul><button class="pulse-action" data-s="'+s+'">▶ Άνοιγμα προπόνησης</button></div>'}).join('');el('pulseTemplates').querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{el('session').value=b.dataset.s;renderWorkout();navigate('workout')});}
+function library(){let q=(el('pulseLibrarySearch').value||'').toLowerCase(),ex=uniq2(rows.map(x=>x.exercise)).sort(),filtered=ex.filter(n=>n.toLowerCase().includes(q));el('pulseLibrary').innerHTML=filtered.map(n=>{let a=rows.filter(x=>x.exercise===n),best=a.filter(recorded).sort((x,y)=>num(y.kg)-num(x.kg))[0],hint=a.find(x=>x.technique)?.technique||'Διατήρησε σωστή τεχνική και έλεγχο της κίνησης.';return '<div class="pulse-card"><span class="pulse-eyebrow">EXERCISE</span><h3 style="margin:9px 0">'+esc(n)+'</h3><p class="pulse-muted">'+esc(hint)+'</p><div class="pulse-row"><span>Καλύτερο βάρος</span><b>'+(best?best.kg+' kg':'—')+'</b></div><button class="pulse-action" style="margin-top:16px" data-ex="'+esc(n)+'">Γράφημα προόδου ↗</button></div>'}).join('')||'<p>Δεν βρέθηκαν ασκήσεις.</p>';el('pulseLibrary').querySelectorAll('[data-ex]').forEach(b=>b.onclick=()=>openExercise(b.dataset.ex));}
+function pulseAutoExercise(){
+ const select=el('pulse1Exercise');
+ if(!select)return;
+ const exercises=uniq2(rows.filter(recorded).map(r=>r.exercise)).sort();
+ const previous=select.value;
+ select.innerHTML='<option value="">Select an exercise</option>'+exercises.map(n=>'<option value="'+esc(n)+'">'+esc(n)+'</option>').join('');
+ if(exercises.includes(previous))select.value=previous;
+ else if(exercises.length)select.value=exercises[0];
+ pulseAutoLoad();
+}
+function pulseAutoLoad(){
+ const ex=el('pulse1Exercise').value;
+ const note=el('pulse1AutoNote');
+ if(!ex){note.textContent='No recorded exercises yet.';return}
+ const records=rows.filter(r=>r.exercise===ex&&recorded(r));
+ // Recorded reps are session totals, not necessarily reps in a single set.
+ // Only infer per-set reps when total reps / sets gives an exact integer.
+ const eligible=records.map(r=>{
+  const sets=Number(r.sets),total=Number(r.reps);
+  const perSet=sets>0&&Number.isInteger(total/sets)?total/sets:NaN;
+  return {...r,perSet};
+ }).filter(r=>Number.isInteger(r.perSet)&&r.perSet>=1&&r.perSet<=12);
+ if(!eligible.length){
+  note.textContent='Recorded weights found, but no reliable per-set rep count. Enter reps manually to calculate 1RM.';
+  const latest=records[records.length-1];
+  if(latest)el('pulse1Weight').value=latest.kg;
+  el('pulse1Reps').value='';
+  calculators();return;
+ }
+ const best=eligible.reduce((a,b)=>Number(a.kg)*(1+a.perSet/30)>=Number(b.kg)*(1+b.perSet/30)?a:b);
+ el('pulse1Weight').value=best.kg;
+ el('pulse1Reps').value=best.perSet;
+ note.textContent='Auto-filled from '+(best.date||'a logged workout')+' · '+best.kg+' kg · '+best.perSet+' estimated reps/set ('+best.reps+' total reps ÷ '+best.sets+' sets). Edit if your sets had different rep counts.';
+ calculators();
+}
+function calculators(){let w=num(el('pulse1Weight').value),reps=num(el('pulse1Reps').value);if(reps<1||reps>12||w<=0){el('pulse1Result').textContent='—';el('pulse1Zones').textContent='Enter 1–12 reps and a positive weight.'}else{let rm=w*(1+reps/30);el('pulse1Result').textContent=(Math.round(rm*10)/10)+' kg';el('pulse1Zones').innerHTML=[100,95,90,85,80,75,70,65,60].map(p=>'<div><strong>'+p+'%</strong><b>'+(Math.round(rm*p/100*2)/2)+' kg</b></div>').join('')}let target=num(el('pulsePlateTarget').value),bar=num(el('pulseBarWeight').value),side=(target-bar)/2,plates=[25,20,15,10,5,2.5,1.25],chosen=[];if(target<bar||side<0){el('pulsePlateMessage').textContent='Ο στόχος πρέπει να είναι τουλάχιστον όσο η μπάρα.';side=0}else{let rem=side;plates.forEach(p=>{for(let count=0;count<40&&rem+1e-6>=p;count++){chosen.push(p);rem-=p}});el('pulsePlateMessage').textContent=rem>0.001?'Δεν σχηματίζεται ακριβώς με τους διαθέσιμους δίσκους. Υπόλοιπο '+rem.toFixed(2)+' kg ανά πλευρά.':'Ακριβής φόρτωση με διαθέσιμους δίσκους.'}el('pulsePlatePerSide').textContent=side.toLocaleString('el-GR')+' kg ανά πλευρά';el('pulsePlateVisual').innerHTML='<div class="pulse-bar"></div>'+chosen.map(p=>'<div class="pulse-plate" style="height:'+Math.min(100,38+p*2)+'px">'+p+'</div>').join('')+'<div class="pulse-bar"></div>';el('pulsePlateLabels').textContent=chosen.length?chosen.join(' + ')+' kg ανά πλευρά':'Χωρίς πρόσθετους δίσκους'}
+function refresh(){progress();library();pulseAutoExercise()}
+el('pulseLibrarySearch').addEventListener('input',library);el('pulse1Exercise').addEventListener('change',pulseAutoLoad);['pulse1Weight','pulse1Reps','pulsePlateTarget','pulseBarWeight'].forEach(id=>el(id).addEventListener('input',calculators));
+templates();pulseAutoExercise();calculators();refresh();document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.tab==='dashboard')refresh();if(b.dataset.tab==='library')library()}));
+// Keep existing save/backup format, refresh added analytics after user updates.
+const oldSave=save;save=function(){oldSave();refresh()};
+})();
+
+
+// PULSEIRON: completion log + cyclical time tracking. All data stays on this device.
+(function(){
+const KEY='pulseiron-clean-v4-pulseiron-completions-v1';
+let completed={};try{completed=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){}
+const oldActual=SEED.old.filter(r=>r.date&&r.workout&&r.exercise&&(has(r.kg)||has(r.reps)));
+const historicalSessions=new Set(oldActual.map(r=>r.date+'|'+r.workout));
+const sessionKey=()=>String($('week').value)+'-'+String($('session').value);
+// Seeded Week 1 sessions are already completed. Never count the same session twice.
+const inferredCompleted={};
+for(const r of SEED.plan){
+ if(r.week!==1||!(has(r.kg)||has(r.reps)))continue;
+ const k=String(r.week)+'-'+String(r.session);
+ if(!inferredCompleted[k])inferredCompleted[k]={date:r.date,workout:r.workout,week:r.week,session:r.session,completedAt:r.date+'T12:00:00',seconds:(r.week===1&&r.session===4?1429:null),source:'initial-plan'};
+}
+const allCompleted=()=>{const isOriginal=rows.length===SEED.plan.length&&rows[0]?.exercise===SEED.plan[0]?.exercise;const merged={...(isOriginal?inferredCompleted:{}),...completed};const k='1-4';if(merged[k]&&merged[k].seconds==null&&inferredCompleted[k])merged[k]={...merged[k],seconds:1429};return merged};
+const current=()=>rows.filter(r=>r.week===Number($('week').value)&&r.session===Number($('session').value));
+const pad=n=>String(n).padStart(2,'0');
+const localToday=()=>{const d=new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())};
+let lastSelectedSession=null;
+const timeFmt=s=>s===null||s===undefined?'—':Math.floor(s/60)+':'+pad(s%60);
+const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify(completed))}catch(e){alert('Could not save. Export a backup.')}};
+function updateFinish(){
+ const list=current(),cyc=list.some(r=>/cyclical/i.test(r.workout)),rec=allCompleted()[sessionKey()];
+ if(lastSelectedSession!==sessionKey()){$('actualWorkoutDate').value=dateFor(Number($('week').value),Number($('session').value))||localToday();lastSelectedSession=sessionKey()}
+ $('cyclicalTimer').style.display=cyc?'block':'none';
+ $('finishSession').textContent=rec?'✓ Update Completed Workout':'✓ Finish Workout';
+ $('undoSession').style.display=completed[sessionKey()]?'inline-block':'none';
+ $('finishMessage').textContent=rec?'Completed: '+rec.date+' · '+list[0]?.workout:'Not marked as completed.';
+ if(cyc){$('cycMinutes').value=rec?.seconds!=null?Math.floor(rec.seconds/60):'';$('cycSeconds').value=rec?.seconds!=null?rec.seconds%60:'';
+ const times=Object.entries(allCompleted()).filter(([k,v])=>k!==sessionKey()&&v.seconds!=null&&/cyclical/i.test(v.workout)).map(([k,v])=>v.seconds);
+ const best=times.length?Math.min(...times):null;
+ $('cycCompare').textContent=best==null?'First recorded time — future sessions will be compared.':'Previous best time: '+timeFmt(best);
+ }
+}
+function selectCalendarWorkoutToday(){
+ const today=localToday();
+ const sessions=[...new Map(rows.filter(r=>r.week!=null&&r.session!=null)
+  .map(r=>[r.week+'-'+r.session,{week:r.week,session:r.session}])).values()];
+ if(!sessions.length)return;
+ const scheduled=sessions.map(x=>({...x,date:dateFor(x.week,x.session)}));
+ const todays=scheduled.filter(x=>x.date===today);
+ // If no workout is planned today, show the next upcoming workout instead of yesterday's.
+ const upcoming=scheduled.filter(x=>x.date>=today).sort((a,b)=>a.date.localeCompare(b.date)||a.session-b.session);
+ const target=todays[0]||upcoming[0]||scheduled.sort((a,b)=>b.date.localeCompare(a.date))[0];
+ if(!target)return;
+ const week=$('week'),session=$('session');
+ if(String(week.value)!==String(target.week)){
+  week.value=String(target.week);
+  updateSessions();
+ }
+ session.value=String(target.session);
+ renderWorkout();
+}
+const originalRender=renderWorkout;
+renderWorkout=function(){originalRender();updateFinish();if(rows.length&&scheduleWeek&&String(scheduleWeek.value)!==String($('week').value)){scheduleWeek.value=$('week').value;renderSchedule();}};
+$('finishSession').onclick=()=>{
+ const list=current();if(!list.length)return;
+ if(!list.some(r=>has(r.kg)||has(r.reps))){alert('Enter weight or reps for at least one exercise first.');return}
+ const cyc=/cyclical/i.test(list[0].workout);let seconds=allCompleted()[sessionKey()]?.seconds??null;
+ if(cyc){let m=$('cycMinutes').value.trim(),sec=$('cycSeconds').value.trim();
+ if(m!==''||sec!==''){let mm=Number(m||0),ss=Number(sec||0);if(!Number.isInteger(mm)||mm<0||!Number.isInteger(ss)||ss<0||ss>59||mm*60+ss<=0){alert('Enter valid minutes and seconds (0–59).');return}seconds=mm*60+ss}
+ }
+ const actualDate=$('actualWorkoutDate').value;
+ if(!/^\d{4}-\d{2}-\d{2}$/.test(actualDate)||Number.isNaN(new Date(actualDate+'T12:00:00').getTime())){alert('Choose a valid workout date.');return}
+ let old=allCompleted()[sessionKey()];
+ completed[sessionKey()]={date:actualDate,workout:list[0].workout,week:list[0].week,session:list[0].session,completedAt:old?.completedAt||new Date().toISOString(),seconds};
+ persist();try{localStorage.setItem('pulseiron-clean-v4-pulseiron-last-workout-v1',JSON.stringify({week:list[0].week,session:list[0].session}))}catch(e){}updateFinish();renderHistory();renderDashboard();
+ alert('Workout saved to history!');
+};
+$('undoSession').onclick=()=>{if(!confirm('Remove the completed status? Exercises and weights will not be deleted.'))return;delete completed[sessionKey()];persist();updateFinish();renderHistory();renderDashboard()};
+const originalHistory=renderHistory;
+renderHistory=function(){originalHistory();
+ const logged=Object.values(allCompleted()).sort((a,b)=>b.date.localeCompare(a.date));
+ const combined=new Set(historicalSessions);
+ logged.forEach(r=>combined.add(r.date+'|'+r.workout));
+ const dates=[...combined].map(x=>x.split('|')[0]).sort();
+ $('lifetimeStats').innerHTML=stat('Σύνολο καταγεγραμμένων προπονήσεων',combined.size)+stat('First workout', logged.length ? logged[0].date : '—')+stat('Προπονήσεις Heavy Hypertrophy',logged.length)+stat('Cyclical ολοκληρωμένα',logged.filter(x=>/cyclical/i.test(x.workout)).length)+stat('Cyclical με χρόνο',logged.filter(x=>/cyclical/i.test(x.workout)&&x.seconds!=null).length);
+ $('completedSessionsTable').innerHTML=logged.length?table(['Date','Πρόγραμμα','Εβδομάδα','Χρόνος Cyclical'],logged.map(r=>[r.date,r.workout,'W'+r.week,r.seconds==null?'—':timeFmt(r.seconds)])):'<div class="empty">Πάτησε «Ολοκλήρωση Προπόνησης» μετά το workout για να εμφανιστεί εδώ.</div>';
+ const timed=logged.filter(x=>x.seconds!=null&&/cyclical/i.test(x.workout)).sort((a,b)=>a.date.localeCompare(b.date));
+ chart('cyclicalTimeChart',timed.map(x=>({label:'W'+x.week,y:Number((x.seconds/60).toFixed(2))})),'λεπτά');
+ const best=timed.length?Math.min(...timed.map(x=>x.seconds)):null;
+ $('cyclicalTimesTable').innerHTML=timed.length?table(['Date','Εβδομάδα','Χρόνος','Από τον καλύτερο'],timed.map(x=>[x.date,'W'+x.week,timeFmt(x.seconds),x.seconds===best?'🏆 Καλύτερος':'+'+timeFmt(x.seconds-best)])):'<div class="empty">Δεν υπάρχουν ακόμη καταχωρισμένοι χρόνοι.</div>';
+ $('historyCount').textContent=oldActual.length+' πραγματικές εγγραφές από το Excel Log (οι κενές μελλοντικές εξαιρούνται)';
+ const q=$('historySearch').value.toLowerCase();let filtered=oldActual.filter(r=>Object.values(r).some(v=>String(v).toLowerCase().includes(q)));
+ $('historyTable').innerHTML=table(['Date','Workout','Exercise','Kg','Reps','Notes'],filtered.slice(0,950).map(r=>[r.date,r.workout,r.exercise,r.kg,r.reps,r.notes]));
+};
+const originalDash=renderDashboard;
+renderDashboard=function(){originalDash();$('stats').insertAdjacentHTML('beforeend',stat('Προπονήσεις από το Log + PULSEIRON',new Set([...historicalSessions,...Object.values(allCompleted()).map(x=>x.date+'|'+x.workout)]).size))};
+// Preserve both workout plan and completion history in backups.
+$('backupBtn').addEventListener('click',e=>{e.stopImmediatePropagation();const keys=['pulseiron-clean-v4-iron-progress-v1','pulseiron-clean-v4-pulseiron-completions-v1','pulseiron-clean-v4-pulseiron-program-archives-v1','pulseiron-clean-v4-pulseiron-active-program-name-v1','pulseiron-training-mode-v1','pulseiron-language-v1','pulseiron-clean-v4-pulseiron-last-workout-v1','pulseiron-custom-programs-v1','pulseiron-clean-v4-pulseiron-body-metrics-v1','pulseiron-onboarding-profile-v1','pulseiron-clean-v4-profile','pulseiron-clean-v4-tour'];const settings={};keys.forEach(k=>{const v=localStorage.getItem(k);if(v!==null)settings[k]=v});download('PULSEIRON-full-backup.json',JSON.stringify({format:'pulseiron-complete-backup-v2',exportedAt:new Date().toISOString(),plan:rows,completed,bodyMetrics:typeof bodyRecords!=='undefined'?bodyRecords:[],archives:JSON.parse(localStorage.getItem('pulseiron-clean-v4-pulseiron-program-archives-v1')||'[]'),customPrograms:JSON.parse(localStorage.getItem('pulseiron-custom-programs-v1')||'[]'),activeProgramName:localStorage.getItem('pulseiron-clean-v4-pulseiron-active-program-name-v1')||'No Active Program',trainingMode:localStorage.getItem('pulseiron-training-mode-v1')||'heavy',settings},null,2),'application/json')},true);
+$('importBtn').addEventListener('click',e=>{e.stopImmediatePropagation();$('fileInput').click()},true);
+$('fileInput').addEventListener('change',async e=>{
+ e.stopImmediatePropagation();const f=e.target.files?.[0];if(!f)return;
+ try{const obj=JSON.parse(await f.text());if(!Array.isArray(obj.plan)||obj.plan.length===0||!obj.plan.every(r=>r&&Number.isFinite(Number(r.week))&&Number.isFinite(Number(r.session))&&typeof r.exercise==='string'))throw Error('Incompatible program');
+ if(!confirm('Replace current data with this backup?'))return;
+ if(obj.format==='pulseiron-complete-backup-v2'&&obj.settings){for(const [k,v] of Object.entries(obj.settings))if(typeof v==='string'&&k.startsWith('pulseiron-')||k==='pulseiron-clean-v4-iron-progress-v1')localStorage.setItem(k,v)}if(Array.isArray(obj.bodyMetrics)){localStorage.setItem('pulseiron-clean-v4-pulseiron-body-metrics-v1',JSON.stringify(obj.bodyMetrics));if(typeof bodyRecords!=='undefined'){bodyRecords=obj.bodyMetrics;}}if(Array.isArray(obj.customPrograms))localStorage.setItem('pulseiron-custom-programs-v1',JSON.stringify(obj.customPrograms));if(Array.isArray(obj.archives))localStorage.setItem('pulseiron-clean-v4-pulseiron-program-archives-v1',JSON.stringify(obj.archives));if(obj.activeProgramName)localStorage.setItem('pulseiron-clean-v4-pulseiron-active-program-name-v1',obj.activeProgramName);if(obj.trainingMode)localStorage.setItem('pulseiron-training-mode-v1',obj.trainingMode);rows=obj.plan;completed=obj.completed&&typeof obj.completed==='object'?obj.completed:{};save();persist();renderWorkout();renderDashboard();renderStrength();renderReview();renderHistory();alert('Η επαναφορά ολοκληρώθηκε.');
+ }catch(err){alert('Import failed: '+err.message)}finally{e.target.value=''}
+},true);
+// Add new history features to existing tab changes and initial render.
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.tab==='history')renderHistory()}));
+
+// Calendar: keep original dates immutable, persist per-session rescheduling inside plan rows.
+const scheduleWeek=$('scheduleWeek');
+const allWeeks=[...new Set(rows.map(r=>r.week))].sort((a,b)=>a-b);
+scheduleWeek.innerHTML=allWeeks.map(w=>'<option value="'+w+'">Week '+w+'</option>').join('');
+const dateFor=(w,s)=>{const r=rows.find(x=>x.week===w&&x.session===s);return r?.scheduledDate||r?.date||''};
+const originalFor=(w,s)=>rows.find(x=>x.week===w&&x.session===s)?.date||'';
+const setPlanned=(w,s,date)=>{
+ if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||Number.isNaN(new Date(date+'T12:00:00').getTime()))return;
+ rows.filter(x=>x.week===w&&x.session===s).forEach(x=>x.scheduledDate=date);
+ save();renderSchedule();updateFinish();
+};
+const isoPlus=(iso,n)=>{const d=new Date(iso+'T12:00:00');d.setDate(d.getDate()+n);return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())};
+function renderSchedule(){
+ const w=Number(scheduleWeek.value), sessions=[...new Set(rows.filter(r=>r.week===w).map(r=>r.session))].sort((a,b)=>a-b);
+ const entries=sessions.map(sn=>({sn,original:originalFor(w,sn),planned:dateFor(w,sn),workout:rows.find(r=>r.week===w&&r.session===sn).workout,done:allCompleted()[w+'-'+sn]}));
+ if(!entries.length){$('scheduleDays').innerHTML='';return}
+ const first=entries.map(e=>e.original).sort()[0];const nextWeek=rows.filter(r=>r.week===w+1).map(r=>r.date).sort()[0];const last=nextWeek?isoPlus(nextWeek,-1):isoPlus(entries.map(e=>e.original).sort().at(-1),1);
+ let dates=[];for(let d=first;d<=last;d=isoPlus(d,1))dates.push(d);
+ const dayNames=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+ const displayDate=d=>dayNames[new Date(d+'T12:00:00').getDay()]+' · '+d.split('-').reverse().join('/');
+ const originals=new Map(entries.filter(e=>e.planned===e.original).map(e=>[e.original,e]));
+ const actuals=new Map();entries.forEach(e=>{if(!actuals.has(e.planned))actuals.set(e.planned,[]);actuals.get(e.planned).push(e)});
+ let html=dates.map(d=>{
+  const e=actuals.get(d)?.[0]||originals.get(d);
+  if(!e)return '<div class="pulse-row" style="padding:13px 4px;border-bottom:1px solid #3a3a3a"><span>'+displayDate(d)+'</span><strong style="color:#aeb5b6">REST</strong></div>';
+  return '<div class="pulse-card" style="margin:10px 0;padding:15px"><div class="pulse-row"><strong>'+displayDate(d)+'</strong><span>'+(e.done?'✓ Completed':'Scheduled')+'</span></div><h3>'+esc(e.workout)+'</h3><div class="field" style="max-width:280px"><label>RESCHEDULE TO</label><input type="date" data-move="'+e.sn+'" value="'+e.planned+'"></div>'+(e.planned!==e.original?'<p class="small">Αρχικά: '+e.original+' · Νέα: '+e.planned+'</p>':'')+'<button class="btn secondary" data-open-session="'+e.sn+'">Άνοιγμα προπόνησης</button></div>';
+ }).join('');
+ const moved=entries.filter(e=>e.planned!==e.original);
+ if(moved.length)html+='<p class="small">Rescheduled workouts appear on their new dates and the calendar updates automatically.</p>';
+ $('scheduleDays').innerHTML=html;
+ $('scheduleDays').querySelectorAll('[data-move]').forEach(input=>input.addEventListener('change',()=>setPlanned(w,Number(input.dataset.move),input.value)));
+ $('scheduleDays').querySelectorAll('[data-open-session]').forEach(b=>b.addEventListener('click',()=>{
+ $('week').value=String(w);$('week').dispatchEvent(new Event('change'));$('session').value=b.dataset.openSession;renderWorkout();
+ document.querySelectorAll('.tab,.page').forEach(x=>x.classList.remove('active'));
+ document.querySelector('[data-tab="workout"]').classList.add('active');$('workout').classList.add('active');window.scrollTo(0,0);
+ }));
+}
+const oldUpdateFinish=updateFinish;
+updateFinish=function(){oldUpdateFinish();const w=Number($('week').value),sn=Number($('session').value);$('plannedWorkoutDate').value=dateFor(w,sn);$('originalWorkoutDate').textContent='Originally scheduled: '+originalFor(w,sn)};
+$('plannedWorkoutDate').addEventListener('change',()=>setPlanned(Number($('week').value),Number($('session').value),$('plannedWorkoutDate').value));
+scheduleWeek.addEventListener('change',renderSchedule);
+document.querySelector('[data-tab="dashboard"]').addEventListener('click',renderSchedule);
+// Refresh after completing or importing a workout.
+$('finishSession').addEventListener('click',renderSchedule);
+$('fileInput').addEventListener('change',()=>setTimeout(renderSchedule,100));
+if(rows.length){renderSchedule();updateFinish();renderHistory();renderDashboard();}
+else {const area=$('scheduleDays');if(area)area.textContent='Your training calendar will appear after you create a program.';}
+})();
+
+
+window.addEventListener("load",()=>{if(rows.length){try{selectCalendarWorkoutToday()}catch(e){console.warn("Calendar sync",e)}}});
+</script><script>
+// Body metrics are stored separately so older workout backups and plans remain intact.
+const BODY_SEED=[];
+const BODY_KEY='pulseiron-clean-v4-pulseiron-body-metrics-v1';
+const BM_FIELDS=[['weight','Weight (kg)','kg'],['muscle','Skeletal muscle (kg)','kg'],['fatMass','Fat mass (kg)','kg'],['bodyFat','Body fat (%)','%'],['waist','Waist (cm)','cm'],['arms','Arms (cm)','cm'],['water','Body water (kg)','kg'],['bmi','BMI',''],['bmr','BMR (kcal)','kcal']];
+const BM_IDS={weight:'bmWeight',muscle:'bmMuscle',fatMass:'bmFatMass',bodyFat:'bmBodyFat',waist:'bmWaist',arms:'bmArms',water:'bmWater',bmi:'bmBmi',bmr:'bmBmr'};
+let bodyRecords=(()=>{try{const x=JSON.parse(localStorage.getItem(BODY_KEY));return Array.isArray(x)?x:BODY_SEED.map(x=>({...x}))}catch(e){return BODY_SEED.map(x=>({...x}))}})();
+let bodyEditing=null;
+function bodyPersist(){try{localStorage.setItem(BODY_KEY,JSON.stringify(bodyRecords))}catch(e){alert('Measurements could not be saved. Export a backup.')}}
+function bodyReset(){bodyEditing=null;document.getElementById('bodyForm').reset();document.getElementById('bmDate').value=new Date().toLocaleDateString('en-CA');document.getElementById('bodyFormTitle').textContent='New measurement';document.getElementById('bmCancel').hidden=true;}
+function bodyRender(){
+ const a=[...bodyRecords].sort((x,y)=>x.date.localeCompare(y.date));
+ const last=a[a.length-1],first=a[0];
+ document.getElementById('bmStats').innerHTML=[['Entries',String(a.length)],['First measurement',first?.date||'—'],['Latest measurement',last?.date||'—'],['Latest weight',last?.weight!=null?last.weight+' kg':'—']].map(([k,v])=>'<div class="card"><div class="small">'+k+'</div><div class="stat">'+v+'</div></div>').join('');
+ const field=document.getElementById('bmMetric').value||'muscle';
+ chart('bmChart',a.filter(x=>x[field]!==null&&x[field]!==undefined&&x[field]!=='').map(x=>({label:x.date.slice(5),y:Number(x[field])})),BM_FIELDS.find(x=>x[0]===field)?.[2]||'');
+ const head=['Date',...BM_FIELDS.map(x=>x[1]),'Notes','Actions'];
+ document.getElementById('bmTable').innerHTML='<table><thead><tr>'+head.map(x=>'<th>'+x+'</th>').join('')+'</tr></thead><tbody>'+a.slice().reverse().map(x=>'<tr><td>'+x.date+'</td>'+BM_FIELDS.map(([k])=>'<td>'+(x[k]??'—')+'</td>').join('')+'<td>'+esc(x.notes||'')+'</td><td><button class="btn secondary" type="button" data-bmedit="'+x.date+'">Επεξεργασία</button> <button class="btn secondary" type="button" data-bmdel="'+x.date+'">Διαγραφή</button></td></tr>').join('')+'</tbody></table>';
+ document.querySelectorAll('[data-bmedit]').forEach(b=>b.onclick=()=>{const r=bodyRecords.find(x=>x.date===b.dataset.bmedit);if(!r)return;bodyEditing=r.date;document.getElementById('bmDate').value=r.date;Object.entries(BM_IDS).forEach(([k,id])=>document.getElementById(id).value=r[k]??'');document.getElementById('bmNotes').value=r.notes||'';document.getElementById('bodyFormTitle').textContent='Επεξεργασία μέτρησης';document.getElementById('bmCancel').hidden=false;document.getElementById('body').scrollIntoView({behavior:'smooth'});});
+ document.querySelectorAll('[data-bmdel]').forEach(b=>b.onclick=()=>{if(!confirm('Να διαγραφεί η μέτρηση '+b.dataset.bmdel+';'))return;bodyRecords=bodyRecords.filter(x=>x.date!==b.dataset.bmdel);bodyPersist();bodyReset();bodyRender()});
+}
+document.getElementById('bmMetric').innerHTML=BM_FIELDS.map(([k,label])=>'<option value="'+k+'">'+label+'</option>').join('');
+document.getElementById('bmMetric').value='muscle';document.getElementById('bmMetric').onchange=bodyRender;
+document.getElementById('bmCancel').onclick=bodyReset;
+document.getElementById('bodyForm').onsubmit=e=>{e.preventDefault();const date=document.getElementById('bmDate').value;if(!date)return;const other=bodyRecords.find(x=>x.date===date&&x.date!==bodyEditing);if(other&&!confirm('Υπάρχει μέτρηση την ίδια ημέρα. Να αντικατασταθεί;'))return;const r={date,notes:document.getElementById('bmNotes').value.trim()};Object.entries(BM_IDS).forEach(([k,id])=>{const raw=document.getElementById(id).value;r[k]=raw===''?null:Number(raw)});bodyRecords=bodyRecords.filter(x=>x.date!==date&&x.date!==bodyEditing);bodyRecords.push(r);bodyPersist();bodyReset();bodyRender();};
+// For restore, the existing import listener remains in charge of plan validation. After its successful restore,
+// load body metrics from the same file when present. Older backups retain the current measurements.
+document.getElementById('fileInput').addEventListener('change',async e=>{const f=e.target.files?.[0];if(!f)return;try{const obj=JSON.parse(await f.text());if(Array.isArray(obj.bodyMetrics)&&Array.isArray(obj.plan)&&obj.plan.length>0){if(confirm('Το backup περιλαμβάνει και μετρήσεις σώματος. Να αντικατασταθούν οι τωρινές μετρήσεις;')){bodyRecords=obj.bodyMetrics;bodyPersist();bodyRender()}}}catch(err){}},true);
+document.querySelector('[data-tab="body"]').addEventListener('click',bodyRender);
+bodyReset();bodyRender();
+</script><script>
+(function(){
+'use strict';
+const ARCHIVE_KEY='pulseiron-clean-v4-pulseiron-program-archives-v1';
+let archives=[];
+try{const a=JSON.parse(localStorage.getItem(ARCHIVE_KEY)||'[]');if(Array.isArray(a))archives=a}catch(e){}
+const $a=id=>document.getElementById(id);
+const safe=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]));
+function persist(){localStorage.setItem(ARCHIVE_KEY,JSON.stringify(archives))}
+function getCompleted(){try{return JSON.parse(localStorage.getItem('pulseiron-completed-v1')||'{}')}catch(e){return {}}}
+function render(){
+ $a('archiveList').innerHTML=archives.length?archives.map((a,i)=>'<div class="card" style="margin-bottom:12px"><h2>'+safe(a.name)+'</h2><p class="small">Archived: '+safe(a.archivedAt?.slice(0,10))+' · '+a.plan.length+' καταχωρίσεις ασκήσεων</p><div class="actions"><button type="button" class="btn secondary" data-archive-open="'+i+'">Άνοιγμα προγράμματος</button><button type="button" class="btn secondary" data-archive-json="'+i+'">Εξαγωγή JSON</button></div></div>').join(''):'<div class="card"><p>Δεν έχει αρχειοθετηθεί ακόμη κάποιο πρόγραμμα. Create your first program to get started.</p></div>';
+ $a('archiveList').querySelectorAll('[data-archive-open]').forEach(b=>b.onclick=()=>show(Number(b.dataset.archiveOpen)));
+ $a('archiveList').querySelectorAll('[data-archive-json]').forEach(b=>b.onclick=()=>{const a=archives[Number(b.dataset.archiveJson)];const blob=new Blob([JSON.stringify(a,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='PULSEIRON-archive-'+(a.archivedAt||'').slice(0,10)+'.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000)});
+}
+function show(i){
+ const a=archives[i];if(!a)return;
+ const grouped=new Map();
+ a.plan.forEach(r=>{const key='Week '+r.week+' · Session '+r.session+' · '+r.workout;if(!grouped.has(key))grouped.set(key,[]);grouped.get(key).push(r)});
+ $a('archiveDetail').innerHTML='<div class="card"><h2>'+safe(a.name)+'</h2><p class="small">Read-only archive — your active program is unchanged.</p>'+[...grouped].map(([k,items])=>'<details style="margin:12px 0"><summary style="cursor:pointer;font-weight:700">'+safe(k)+' ('+items.length+' ασκήσεις)</summary><div class="tablewrap"><table><thead><tr><th>Date</th><th>Άσκηση</th><th>Target</th><th>Actual kg</th><th>Reps</th></tr></thead><tbody>'+items.map(r=>'<tr><td>'+safe(r.actualDate||r.completedDate||r.date)+'</td><td>'+safe(r.exercise)+'</td><td>'+safe(r.targetOverrideKg??r.targetKg)+' kg / '+safe(r.targetReps)+'</td><td>'+safe(r.kg)+'</td><td>'+safe(r.reps)+'</td></tr>').join('')+'</tbody></table></div></details>').join('')+'</div>';
+}
+$a('archiveCurrent').onclick=()=>{
+ const name=$a('archiveName').value.trim();if(!name){alert('Enter a program name.');return}
+ if(archives.some(a=>a.name===name)){alert('A program with this name already exists in the archive.');return}
+ if(!confirm('Is the program complete? A snapshot will be archived without deleting the active program.'))return;
+ const completedBackup=(()=>{try{return JSON.parse(localStorage.getItem('pulseiron-completed-sessions-v1')||'{}')}catch(e){return {}}})();
+ archives.push({name,archivedAt:new Date().toISOString(),plan:rows.map(r=>({...r})),completed:completedBackup});
+ try{persist();render();alert('Το πρόγραμμα αποθηκεύτηκε στο Αρχείο.')}catch(e){archives.pop();alert('Δεν υπήρχε χώρος για αποθήκευση. Κάνε Export Backup.')}
+};
+document.querySelector('[data-tab="archives"]').addEventListener('click',render);
+$a('fileInput').addEventListener('change',async e=>{
+ const file=e.target.files?.[0];if(!file)return;
+ try{const data=JSON.parse(await file.text());if(Array.isArray(data.archives)&&Array.isArray(data.plan)&&data.plan.length===rows.length){if(confirm('Το backup περιέχει '+data.archives.length+' αρχειοθετημένα προγράμματα. Να εισαχθούν στο Αρχείο;')){archives=data.archives;persist();render()}}}catch(e){}
+},true);
+render();
+})();
+</script><script>
+(function(){
+ const KEY='pulseiron-clean-v4-pulseiron-active-program-name-v1',fallback='No Active Program';
+ const input=document.getElementById('activeProgramName'),title=document.getElementById('activeProgramTitle'),tab=document.getElementById('activeProgramTabName'),archive=document.getElementById('archiveName');
+ function apply(name){const value=name||fallback;input.value=value;title.textContent=value;tab.textContent=value;if(archive)archive.value=value;}
+ try{apply(localStorage.getItem(KEY)||fallback)}catch(e){apply(fallback)}
+ document.getElementById('saveActiveProgramName').addEventListener('click',()=>{
+  const name=input.value.trim();if(!name){alert('Enter a program name.');return}
+  try{localStorage.setItem(KEY,name);apply(name);alert('Active program name saved.')}catch(e){alert('Unable to save.')}
+ });
+})();
+</script>
+<script>(()=>{document.documentElement.lang='en'})();</script>
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id),key='pulseiron-clean-v4-custom-programs';
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const types={heavy:['Heavy Hypertrophy',5],extreme:['Extreme Hypertrophy',5],classic:['Classic Hypertrophy',4],strength:['Strength',3],power:['Powerbuilding',4],cutting:['Cutting',4],recomp:['Body Recomposition',4],full:['Full Body',3],upper:['Upper / Lower',4],ppl:['Push / Pull / Legs',6],custom:['Custom Program',4]};
+const equipment={db:'Dumbbells',bar:'Barbell + plates',bench:'Bench',bands:'Resistance bands',pullup:'Pull-up bar',kettlebell:'Kettlebell',rack:'Squat rack',cable:'Cable machine',machine:'Machines',trx:'TRX',mat:'Exercise mat',jump_rope:'Jump rope',bike:'Exercise bike',treadmill:'Treadmill',rower:'Rowing machine',step:'Step / Box',medicine_ball:'Medicine ball',foam_roller:'Foam roller',bodyweight:'Bodyweight'};
+const X=(name,group,gear,sets=3,reps='8-12')=>({name,group,gear,sets,reps});
+const db=[
+X('Barbell Bench Press','chest',['bar','bench'],'3','5-8'),X('Incline Dumbbell Press','chest',['db','bench']),X('Dumbbell Floor Press','chest',['db']),X('Push Ups','chest',[]),X('Cable Chest Fly','chest',['cable']),X('Machine Chest Press','chest',['machine']),X('Dumbbell Fly','chest',['db','bench']),
+X('Pull Ups','back',['pullup'],3,'6-10'),X('Lat Pulldown','back',['cable']),X('Chest Supported DB Row','back',['db','bench']),X('One Arm Dumbbell Row','back',['db']),X('Barbell Bent Over Row','back',['bar']),X('Seated Cable Row','back',['cable']),X('Resistance Band Row','back',['bands']),X('Inverted Row','back',[]),
+X('Barbell Back Squat','quads',['bar','rack'],3,'5-8'),X('Goblet Squat','quads',['db']),X('Bulgarian Split Squat','quads',['db']),X('Bodyweight Split Squat','quads',[]),X('Leg Press','quads',['machine']),X('Leg Extension','quads',['machine']),X('Step Ups','quads',[]),X('Walking Lunges','quads',['db']),
+X('Romanian Deadlift','hinge',['bar']),X('Dumbbell Romanian Deadlift','hinge',['db']),X('Barbell Deadlift','hinge',['bar'],3,'3-6'),X('Kettlebell Deadlift','hinge',['kettlebell']),X('Glute Bridge','hinge',[]),X('Hip Thrust','hinge',['bench','db']),X('Lying Leg Curl','hinge',['machine']),X('Banded Leg Curl','hinge',['bands']),
+X('Barbell Overhead Press','shoulders',['bar']),X('Seated Dumbbell Shoulder Press','shoulders',['db','bench']),X('Arnold Press','shoulders',['db']),X('Dumbbell Lateral Raise','shoulders',['db'],3,'12-20'),X('Cable Lateral Raise','shoulders',['cable'],3,'12-20'),X('Band Lateral Raise','shoulders',['bands'],3,'12-20'),X('Reverse Pec Deck','rear',['machine'],3,'12-20'),X('Rear Delt Dumbbell Fly','rear',['db'],3,'12-20'),X('Band Face Pull','rear',['bands'],3,'12-20'),
+X('Incline Dumbbell Curl','biceps',['db','bench'],3,'10-15'),X('Hammer Curl','biceps',['db'],3,'10-15'),X('Barbell Curl','biceps',['bar'],3,'8-12'),X('Cable Curl','biceps',['cable'],3,'10-15'),X('Band Curl','biceps',['bands'],3,'12-20'),X('Dumbbell Curl','biceps',['db'],3,'10-15'),
+X('Cable Triceps Pushdown','triceps',['cable'],3,'10-15'),X('Overhead Dumbbell Triceps Extension','triceps',['db'],3,'10-15'),X('Close Grip Push Ups','triceps',[],3,'8-15'),X('Lying Dumbbell Triceps Extension','triceps',['db','bench'],3,'10-15'),X('Band Triceps Extension','triceps',['bands'],3,'12-20'),
+
+X('Incline Barbell Bench Press','chest',['bar','bench']),X('Decline Dumbbell Press','chest',['db','bench']),X('Neutral Grip Dumbbell Press','chest',['db','bench']),X('Close Grip Bench Press','chest',['bar','bench']),X('Paused Bench Press','chest',['bar','bench']),X('Dumbbell Squeeze Press','chest',['db','bench']),X('Incline Push Ups','chest',[]),X('Decline Push Ups','chest',[]),X('Diamond Push Ups','chest',[]),X('Tempo Push Ups','chest',[]),X('Band Chest Press','chest',['bands']),X('Low to High Cable Fly','chest',['cable']),X('High to Low Cable Fly','chest',['cable']),X('Pec Deck Fly','chest',['machine']),
+X('Chin Ups','back',['pullup']),X('Neutral Grip Pull Ups','back',['pullup']),X('Band Assisted Pull Ups','back',['pullup','bands']),X('Wide Grip Lat Pulldown','back',['cable']),X('Close Grip Lat Pulldown','back',['cable']),X('Straight Arm Pulldown','back',['cable']),X('Single Arm Cable Row','back',['cable']),X('Wide Grip Seated Row','back',['cable']),X('T Bar Row','back',['bar']),X('Pendlay Row','back',['bar']),X('Underhand Barbell Row','back',['bar']),X('Meadows Row','back',['bar']),X('Incline Bench Dumbbell Row','back',['db','bench']),X('Dumbbell Pullover','back',['db','bench']),X('Band Lat Pulldown','back',['bands']),X('Bent Over Band Row','back',['bands']),X('Superman Pull','back',[]),
+X('Front Squat','quads',['bar','rack']),X('Pause Squat','quads',['bar','rack']),X('Box Squat','quads',['bar','rack']),X('Dumbbell Front Squat','quads',['db']),X('Dumbbell Reverse Lunge','quads',['db']),X('Dumbbell Split Squat','quads',['db']),X('Reverse Lunge','quads',[]),X('Forward Lunge','quads',[]),X('Bodyweight Squat','quads',[]),X('Tempo Squat','quads',[]),X('Wall Sit','quads',[],3,'30-60 sec'),X('Sissy Squat Assisted','quads',[]),X('Heel Elevated Goblet Squat','quads',['db']),X('Hack Squat Machine','quads',['machine']),X('Smith Machine Squat','quads',['machine']),X('Single Leg Leg Press','quads',['machine']),X('Banded Squat','quads',['bands']),
+X('Sumo Deadlift','hinge',['bar']),X('Stiff Leg Deadlift','hinge',['bar']),X('Single Leg Dumbbell RDL','hinge',['db']),X('Dumbbell Sumo Deadlift','hinge',['db']),X('Kettlebell Swing','hinge',['kettlebell']),X('Kettlebell Romanian Deadlift','hinge',['kettlebell']),X('Single Leg Glute Bridge','hinge',[]),X('Hamstring Walkouts','hinge',[]),X('Sliding Hamstring Curl','hinge',[]),X('Good Morning','hinge',['bar']),X('Banded Good Morning','hinge',['bands']),X('Banded Glute Bridge','hinge',['bands']),X('Cable Pull Through','hinge',['cable']),X('Seated Leg Curl','hinge',['machine']),X('Single Leg Leg Curl','hinge',['machine']),
+X('Standing Dumbbell Press','shoulders',['db']),X('Single Arm Dumbbell Press','shoulders',['db']),X('Push Press','shoulders',['bar']),X('Landmine Press','shoulders',['bar']),X('Z Press','shoulders',['db']),X('Pike Push Ups','shoulders',[]),X('Dumbbell Front Raise','shoulders',['db']),X('Cable Front Raise','shoulders',['cable']),X('Lean Away Lateral Raise','shoulders',['db']),X('Seated Lateral Raise','shoulders',['db']),X('Machine Shoulder Press','shoulders',['machine']),X('Band Overhead Press','shoulders',['bands']),
+X('Cable Face Pull','rear',['cable']),X('Cable Rear Delt Fly','rear',['cable']),X('Incline Rear Delt Raise','rear',['db','bench']),X('Bent Over Rear Delt Raise','rear',['db']),X('Band Pull Apart','rear',['bands']),X('Prone Y Raise','rear',[]),X('Wall Slides','rear',[]),
+X('Spider Curl','biceps',['db','bench']),X('Concentration Curl','biceps',['db']),X('Alternating Dumbbell Curl','biceps',['db']),X('Cross Body Hammer Curl','biceps',['db']),X('Zottman Curl','biceps',['db']),X('Reverse Barbell Curl','biceps',['bar']),X('Preacher Curl Machine','biceps',['machine']),X('High Cable Curl','biceps',['cable']),X('Bayesian Cable Curl','biceps',['cable']),X('Reverse Grip Cable Curl','biceps',['cable']),X('Isometric Towel Curl','biceps',[]),
+X('Dumbbell Skull Crusher','triceps',['db','bench']),X('Close Grip Dumbbell Press','triceps',['db','bench']),X('Dumbbell Kickback','triceps',['db']),X('Single Arm Overhead Extension','triceps',['db']),X('Rope Triceps Pushdown','triceps',['cable']),X('Reverse Grip Pushdown','triceps',['cable']),X('Overhead Cable Extension','triceps',['cable']),X('Band Pushdown','triceps',['bands']),X('Bench Triceps Dip','triceps',['bench']),X('Diamond Push Up','triceps',[]),
+X('Single Leg Calf Raise','calves',[]),X('Donkey Calf Raise','calves',[]),X('Barbell Standing Calf Raise','calves',['bar']),X('Leg Press Calf Raise','calves',['machine']),X('Seated Dumbbell Calf Raise','calves',['db']),
+X('Reverse Crunch','core',[]),X('Bicycle Crunch','core',[]),X('Hollow Body Hold','core',[],3,'20-40 sec'),X('Bird Dog','core',[]),X('Mountain Climbers','core',[]),X('Leg Raise','core',[]),X('Russian Twist','core',[]),X('Suitcase Carry','core',['db']),X('Farmer Carry','core',['db']),X('Pallof Press','core',['bands']),X('Cable Woodchop','core',['cable']),X('Ab Wheel Rollout','core',[]),X('Hanging Leg Raise','core',['pullup']),
+X('Standing Calf Raise','calves',[],3,'12-20'),X('Seated Machine Calf Raise','calves',['machine'],3,'10-15'),X('Dumbbell Calf Raise','calves',['db'],3,'12-20'),X('Plank','core',[],3,'30-60 sec'),X('Dead Bug','core',[],3,'10-12 / side'),X('Hanging Knee Raise','core',['pullup'],3,'10-15'),X('Cable Crunch','core',['cable'],3,'12-15'),X('Side Plank','core',[],3,'30 sec / side')
+];
+const groups={
+'Upper A':['chest','back','shoulders','back','biceps','triceps'],
+'Upper B':['back','chest','rear','shoulders','triceps','biceps'],
+'Lower A':['quads','hinge','quads','calves','core'],
+'Lower B':['hinge','quads','hinge','calves','core'],
+'Push A':['chest','shoulders','chest','shoulders','triceps'],
+'Push B':['shoulders','chest','shoulders','chest','triceps'],
+'Pull A':['back','back','rear','biceps','core'],
+'Pull B':['back','rear','back','biceps','biceps'],
+'Legs A':['quads','hinge','quads','calves','core'],
+'Legs B':['hinge','quads','hinge','calves','core'],
+'Full Body A':['quads','chest','back','hinge','core'],
+'Full Body B':['hinge','shoulders','back','quads','biceps'],
+'Full Body C':['quads','back','chest','hinge','triceps'],
+'Strength A':['quads','chest','back','core'],
+'Strength B':['hinge','shoulders','back','core'],
+'Strength C':['quads','chest','hinge','back'],
+'Power Upper':['chest','back','shoulders','biceps','triceps'],
+'Power Lower':['quads','hinge','quads','calves','core'],
+'Hypertrophy Upper':['back','chest','shoulders','rear','biceps','triceps'],
+'Hypertrophy Lower':['hinge','quads','hinge','calves','core'],
+'Circuit A':['quads','chest','back','hinge','core'],
+'Circuit B':['hinge','shoulders','quads','back','core']};
+const layouts={heavy:['Upper A','Lower A','Upper B','Lower B','Full Body C'],extreme:['Push A','Pull A','Legs A','Upper B','Lower B','Push B'],classic:['Upper A','Lower A','Upper B','Lower B'],strength:['Strength A','Strength B','Strength C'],power:['Power Upper','Power Lower','Hypertrophy Upper','Hypertrophy Lower'],cutting:['Circuit A','Circuit B','Upper B','Lower A'],recomp:['Full Body A','Upper B','Lower B','Full Body C'],full:['Full Body A','Full Body B','Full Body C'],upper:['Upper A','Lower A','Upper B','Lower B'],ppl:['Push A','Pull A','Legs A','Push B','Pull B','Legs B'],custom:['My Workout']};
+let programs=[];try{const v=JSON.parse(localStorage.getItem(key)||'[]');if(Array.isArray(v))programs=v}catch(e){}
+let days=[];let currentEdit=-1;
+const allGear=new Set(Object.keys(equipment));
+function location(){return $('programLocation').value}
+function selectedGear(){return location()==='gym'?allGear:new Set([...$('homeEquipmentChoices').querySelectorAll('input:checked')].map(e=>e.value))}
+function available(x){return x.gear.every(g=>selectedGear().has(g))}
+function makeExercise(group,type,dayIndex,slotIndex,used){
+ let pool=db.filter(x=>x.group===group&&available(x)&&!used.has(x.name));
+ if(!pool.length)pool=db.filter(x=>x.group===group&&available(x));
+ if(!pool.length)pool=db.filter(x=>available(x));
+ if(!pool.length)return null;
+ // Different exercises across programs, sessions and slots; deterministic so regeneration is reproducible.
+ const seed={heavy:1,extreme:5,classic:2,strength:0,power:3,cutting:4,recomp:2,full:1,upper:0,ppl:4,custom:0}[type]||0;
+ const pick=pool[(seed+dayIndex*3+slotIndex)%pool.length];used.add(pick.name);
+ let sets=Number(pick.sets),reps=pick.reps;
+ if(type==='strength'){sets=group==='core'?3:4;reps=group==='core'?reps:(['quads','hinge','chest','shoulders'].includes(group)?'3-6':'5-8')}
+ else if(type==='extreme'){sets=4;reps=group==='core'?reps:'10-15'}
+ else if(type==='heavy'){sets=3;reps=group==='core'?reps:(['quads','hinge','chest','back'].includes(group)?'6-10':'8-12')}
+ else if(type==='cutting'){sets=3;reps=group==='core'?reps:'12-15'}
+ else if(type==='power'){sets=dayIndex<2?4:3;reps=dayIndex<2?'4-8':'8-15'}
+ return {exercise:pick.name,sets,reps,kg:''};
+}
+function template(type,count){if(type==='custom')return Array.from({length:count},(_,i)=>({name:'My Workout '+(i+1),day:i+1,exercises:[]}));
+ const names=layouts[type]||layouts.classic;
+ return Array.from({length:count},(_,i)=>{
+ const name=names[i%names.length],sequence=groups[name]||groups['Full Body A'],used=new Set();
+ const exercises=sequence.map((g,j)=>makeExercise(g,type,i,j,used)).filter(Boolean);
+ return {name,day:i+1,exercises};
+ });}
+function variationOptions(name){
+ const found=db.find(x=>x.name===name),group=found?.group;
+ const pool=db.filter(x=>available(x)&&x.name!==name&&(!group||x.group===group));
+ return pool.map(x=>'<option value="'+esc(x.name)+'">'+esc(x.name)+'</option>').join('');
+}
+function render(){const root=$('programPreview');root.innerHTML=days.map((d,i)=>`<section class="pl-day"><div class="pl-day-head"><span>DAY ${i+1}</span><input data-day-name="${i}" value="${esc(d.name)}" aria-label="Workout name" /></div><div class="pl-exercises">${d.exercises.map((e,j)=>`<article class="pl-exercise"><div class="pl-exercise-title"><strong>Exercise ${j+1}</strong><button type="button" class="pl-remove" data-remove="${i}|${j}" aria-label="Remove exercise">×</button></div><label class="pl-field">EXERCISE / ΑΣΚΗΣΗ<input data-ex="${i}|${j}|exercise" value="${esc(e.exercise)}"></label><label class="pl-field">VARIATION / FRIΑΛΛΑΓΗ<select aria-label="Swap exercise variation" data-swap="${i}|${j}"><option value="">↻ Choose variation…</option>${variationOptions(e.exercise)}</select></label><div class="pl-numbers"><label class="pl-field">SETS / ΣΕΤ<input type="number" min="1" max="10" data-ex="${i}|${j}|sets" value="${esc(e.sets)}"></label><label class="pl-field">REPS / ΕΠΑΝΑΛΗΨΕΙΣ<input data-ex="${i}|${j}|reps" value="${esc(e.reps)}"></label></div><label class="pl-field">TARGET KG / ΣΤΟΧΟΣ<input type="number" min="0" step="0.5" data-ex="${i}|${j}|kg" value="${esc(e.kg)}"></label></article>`).join('')}</div><button type="button" class="btn secondary pl-add" data-add-to-day="${i}">+ Exercise</button></section>`).join('');
+ root.querySelectorAll('[data-day-name]').forEach(x=>x.onchange=()=>days[+x.dataset.dayName].name=x.value);
+ root.querySelectorAll('[data-ex]').forEach(x=>x.onchange=()=>{const [i,j,k]=x.dataset.ex.split('|');days[+i].exercises[+j][k]=k==='sets'?Math.max(1,Number(x.value)||1):x.value});
+ root.querySelectorAll('[data-swap]').forEach(x=>x.onchange=()=>{if(!x.value)return;const [i,j]=x.dataset.swap.split('|').map(Number);days[i].exercises[j].exercise=x.value;render()});
+ root.querySelectorAll('[data-remove]').forEach(x=>x.onclick=()=>{const [i,j]=x.dataset.remove.split('|').map(Number);days[i].exercises.splice(j,1);render()});
+ root.querySelectorAll('[data-add-to-day]').forEach(x=>x.onclick=()=>{days[+x.dataset.addToDay].exercises.push({exercise:'New Exercise',sets:3,reps:'8-12',kg:''});render()});
+ $('programRecommendation').textContent='Recommended: '+types[$('programTemplate').value][1]+' days/week · Selected: '+$('programDays').value+' days · '+(location()==='gym'?'Gym':(location()==='both'?'Gym & Home':'Home')+' ('+[...selectedGear()].map(g=>equipment[g]).join(', ')+')')+' · Rest days: '+Math.max(0,7-days.length);
+}
+function refresh(){const t=$('programTemplate').value;days=template(t,+$('programDays').value);$('programCustomName').value=types[t][0];currentEdit=-1;render()}
+$('homeEquipmentChoices').innerHTML=Object.entries(equipment).map(([k,v])=>'<label style="display:inline-flex;align-items:center;gap:5px;font-size:12px"><input type="checkbox" value="'+k+'"> '+v+'</label>').join('');
+try{const profile=JSON.parse(localStorage.getItem('pulseiron-clean-v4-profile')||'null');if(profile){$('programLocation').value=profile.trainingLocation||'gym';const owned=profile.homeEquipment||profile.equipment||[];$('homeEquipmentChoices').querySelectorAll('input').forEach(x=>x.checked=Array.isArray(owned)&&owned.includes(x.value));$('homeEquipmentBox').style.display=location()==='gym'?'none':'block';}}catch(e){}
+$('programTemplate').innerHTML=Object.entries(types).map(([k,v])=>'<option value="'+k+'">'+v[0]+'</option>').join('');
+$('programTemplate').onchange=()=>{$('programDays').value=types[$('programTemplate').value][1];refresh()};
+$('programDays').onchange=refresh;
+$('programLocation').onchange=()=>{$('homeEquipmentBox').style.display=location()==='gym'?'none':'block';refresh()};
+$('homeEquipmentChoices').onchange=refresh;
+$('programAddExercise').onclick=()=>{if(!days.length)days.push({name:'Workout',day:1,exercises:[]});days[days.length-1].exercises.push({exercise:'New Exercise',sets:3,reps:'8-12',kg:''});render()};
+$('programAddDay').onclick=()=>{if(days.length>=6){alert('Maximum 6 workout days.');return}days.push({name:'Workout '+(days.length+1),day:days.length+1,exercises:[]});$('programDays').value=days.length;render()};
+function persist(){localStorage.setItem(key,JSON.stringify(programs))}
+function showSaved(){const root=$('savedPrograms');root.innerHTML=programs.length?programs.map((p,i)=>'<div class="card" style="margin:8px 0"><b>'+esc(p.name)+'</b><p class="small">'+p.weeks+' weeks · '+p.days.length+' workout days · '+esc(p.location||'gym')+'</p><button type="button" class="btn secondary" data-load-program="'+i+'">Edit</button> <button type="button" class="btn secondary" data-activate-program="'+i+'">Activate</button> <button type="button" class="btn secondary" data-delete-program="'+i+'">Delete</button></div>').join(''):'<p class="small">No saved programs yet.</p>';
+ root.querySelectorAll('[data-load-program]').forEach(x=>x.onclick=()=>{const p=programs[+x.dataset.loadProgram];currentEdit=+x.dataset.loadProgram;days=JSON.parse(JSON.stringify(p.days));$('programTemplate').value=types[p.mode]?p.mode:'custom';$('programDays').value=p.days.length;$('programCustomName').value=p.name;$('programWeeks').value=p.weeks;$('programStart').value=p.start||'';$('programLocation').value=p.location||'gym';$('homeEquipmentBox').style.display=location()==='gym'?'none':'block';root.querySelectorAll('input');$('homeEquipmentChoices').querySelectorAll('input').forEach(e=>e.checked=(p.equipment||[]).includes(e.value));render()});
+ root.querySelectorAll('[data-activate-program]').forEach(x=>x.onclick=()=>{
+ const p=programs[+x.dataset.activateProgram];if(!p||!p.days?.length)return;
+ if(!confirm('Activate '+p.name+'? Your current program will be archived and replaced. Export a JSON backup first.'))return;
+ try{
+ const archiveKey='pulseiron-clean-v4-pulseiron-program-archives-v1',a=JSON.parse(localStorage.getItem(archiveKey)||'[]');
+ a.push({name:localStorage.getItem('pulseiron-clean-v4-pulseiron-active-program-name-v1')||'No Active Program',archivedAt:new Date().toISOString(),plan:rows.map(r=>({...r})),completed:typeof completed==='object'?JSON.parse(JSON.stringify(completed)):{} });
+ const start=p.start||new Date().toISOString().slice(0,10),date=n=>{const d=new Date(start+'T12:00:00');d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)};
+ let id=1;const newRows=[];
+ for(let w=1;w<=p.weeks;w++)for(let j=0;j<p.days.length;j++){
+ const day=p.days[j],offset=Math.floor(j*7/p.days.length);
+ for(const e of day.exercises)newRows.push({id:id++,week:w,session:j+1,date:date((w-1)*7+offset),workout:day.name,exercise:e.exercise,sets:Number(e.sets)||3,targetReps:String(e.reps||'8-12'),targetKg:e.kg?String(e.kg)+' kg':'User selected',targetOverrideKg:e.kg?Number(e.kg):null,kg:null,reps:null,notes:'',rest:'60-90 sec',loadType:'',focus:'',technique:''});
+ }
+ if(!newRows.length)throw Error('No exercises');
+ // Write all new state only after validation.
+ localStorage.setItem(archiveKey,JSON.stringify(a));rows=newRows;save();
+ if(typeof completed==='object'){Object.keys(completed).forEach(k=>delete completed[k]);localStorage.setItem('pulseiron-clean-v4-pulseiron-completions-v1','{}')}
+ localStorage.setItem('pulseiron-clean-v4-pulseiron-active-program-name-v1',p.name);
+ localStorage.setItem('pulseiron-training-mode-v1',p.mode||'classic');
+ localStorage.removeItem('pulseiron-clean-v4-pulseiron-last-workout-v1');window.location.reload();
+ }catch(e){alert('Could not activate program: '+e.message)}
+ });
+ root.querySelectorAll('[data-delete-program]').forEach(x=>x.onclick=()=>{if(!confirm('Delete this saved template?'))return;programs.splice(+x.dataset.deleteProgram,1);persist();showSaved()});
+}
+$('programSave').onclick=()=>{const name=$('programCustomName').value.trim();if(!name||!days.length||days.some(d=>!d.name.trim()||!d.exercises.length||d.exercises.some(e=>!e.exercise.trim()))){alert('Add a program name and at least one valid exercise to each day.');return}
+ const p={name,mode:$('programTemplate').value,weeks:Number($('programWeeks').value),start:$('programStart').value,location:location(),equipment:[...selectedGear()],days:JSON.parse(JSON.stringify(days)),savedAt:new Date().toISOString()};
+ if(currentEdit>=0)programs[currentEdit]=p;else programs.push(p);
+ try{persist();showSaved();currentEdit=-1;alert('Program saved. Your active program was not replaced.')}catch(e){alert('Could not save program: '+e.message)}
+};
+$('programDays').value=types[$('programTemplate').value][1];refresh();showSaved();
+// Optional onboarding: profile is separate from workout history and never activates a program.
+const piProfileKey='pulseiron-onboarding-profile-v1';
+function piProfile(){return {height:Number($('piHeight').value),weight:Number($('piWeight').value),experience:$('piExperience').value,goal:$('piGoal').value,calibration:{press:Number($('piPressKg').value)||0,row:Number($('piRowKg').value)||0,squat:Number($('piSquatKg').value)||0}}}
+function piValidate(p){if(!Number.isFinite(p.height)||p.height<100||p.height>250||!Number.isFinite(p.weight)||p.weight<25||p.weight>350){$('piStartResult').textContent='Συμπλήρωσε έγκυρο ύψος (100–250 cm) και βάρος (25–350 kg). / Enter valid height and weight.';return false}return true}
+function piSave(){const p=piProfile();if(!piValidate(p))return null;try{localStorage.setItem(piProfileKey,JSON.stringify(p))}catch(e){$('piStartResult').textContent='Could not save profile on this device.';return null}return p}
+try{const p=JSON.parse(localStorage.getItem(piProfileKey)||'null');if(p){$('piHeight').value=p.height||'';$('piWeight').value=p.weight||'';$('piExperience').value=p.experience||'beginner';$('piGoal').value=p.goal||'muscle';$('piPressKg').value=p.calibration?.press||'';$('piRowKg').value=p.calibration?.row||'';$('piSquatKg').value=p.calibration?.squat||'';$('piStartResult').textContent='✓ Profile loaded · Τα στοιχεία σου φορτώθηκαν.'}}catch(e){}
+$('piEditProfile').onclick=()=>{if(piSave())$('piStartResult').textContent='✓ Profile saved locally. Your workout records are unchanged. / Profile saved.'};
+$('piRecommend').onclick=()=>{const p=piSave();if(!p)return;
+ const options={muscle:p.experience==='advanced'?'heavy':p.experience==='beginner'?'full':'classic',strength:p.experience==='beginner'?'full':'strength',fatloss:'cutting',recomp:'recomp',fitness:'full'};
+ const mode=options[p.goal]||'classic';const recommendedDays=p.experience==='beginner'?3:p.experience==='intermediate'?4:5;
+ $('programTemplate').value=mode;$('programDays').value=String(recommendedDays);refresh();
+ // Suggestions are deliberately limited to the same calibrated movement; anthropometrics alone cannot establish safe load.
+ const anchors=[[/dumbbell.*(bench|chest).*press|(?:flat|incline).*dumbbell.*press/i,p.calibration.press],[/(one.arm|single.arm).*dumbbell.*row/i,p.calibration.row],[/goblet squat/i,p.calibration.squat]];
+ let filled=0;
+ days.forEach(d=>d.exercises.forEach(e=>{if(e.kg!==''&&e.kg!=null)return;const anchor=anchors.find(([rx,v])=>v>0&&rx.test(e.exercise));if(anchor){const factor=p.experience==='beginner'?0.7:0.85;e.kg=String(Math.max(0.5,Math.round(anchor[1]*factor*2)/2));filled++}}));
+ render();
+const labels={beginner:'Beginner',intermediate:'Intermediate',advanced:'Advanced'};
+ $('piStartResult').textContent='✓ '+labels[p.experience]+' · '+p.height+' cm · '+p.weight+' kg. Suggested: '+types[mode][0]+' · '+recommendedDays+' days/week. '+filled+' calibrated exercise targets suggested; remaining kg fields are intentionally blank until a safe trial set. This is a starting suggestion, not a medical assessment. You may change the program, days, equipment and exercises below. Your active workout remains unchanged.';
+};
+
+
+// Exercise guide: read-only, no modification to workouts or localStorage.
+const guideGroups={
+chest:["Σταθεροποίησε ωμοπλάτες και κορμό. Κατέβασε ελεγχόμενα και πίεσε χωρίς αναπήδηση.","Μην ανοίγεις υπερβολικά τους αγκώνες ή σηκώνεις τους ώμους.","Κράτησε σταθερή τροχιά και άνετο εύρος κίνησης.","Set shoulders and core. Lower under control and press without bouncing.","Avoid flaring elbows excessively or shrugging.","Use a steady path and comfortable range."],
+back:["Κράτησε τον κορμό σταθερό και τράβα οδηγώντας με τους αγκώνες.","Μην τραβάς με φόρα ή καμπουριάζεις.","Σκέψου ότι πλησιάζεις τους αγκώνες προς τα πλευρά.","Brace your torso and pull by driving the elbows.","Avoid swinging or rounding the back.","Lead with your elbows."],
+quads:["Κράτησε το πέλμα σταθερό, λύγισε γόνατα και ισχία ελεγχόμενα.","Μην αφήνεις τα γόνατα να καταρρέουν προς τα μέσα.","Δούλεψε σε εύρος που ελέγχεις χωρίς πόνο.","Keep feet planted and bend knees and hips with control.","Do not let knees collapse inward.","Use a pain-free range you can control."],
+hinge:["Σπρώξε τους γοφούς πίσω, κράτησε ουδέτερη πλάτη και το βάρος κοντά στο σώμα.","Μην στρογγυλεύεις τη μέση ή τραβάς απότομα.","Σφίξε κοιλιά και γλουτούς σε όλη την κίνηση.","Push hips back, keep a neutral back and the load close.","Avoid rounding your lower back or jerking.","Brace your core and engage glutes."],
+shoulders:["Σταθερός κορμός, ομαλή ανύψωση και ελεγχόμενη επιστροφή.","Μην σηκώνεις τους ώμους προς τα αυτιά ή χρησιμοποιείς φόρα.","Κράτησε το βάρος που επιτρέπει καθαρή τεχνική.","Brace the torso, lift smoothly and lower under control.","Avoid shrugging or swinging.","Choose a load that preserves form."],
+rear:["Άνοιξε τα χέρια με ελαφρώς λυγισμένους αγκώνες, χωρίς φόρα.","Μην τραβάς με τον αυχένα ή υπερεκτείνεις τη μέση.","Νιώσε το πίσω μέρος των ώμων.","Move arms apart with soft elbows and no momentum.","Avoid neck tension or arching the back.","Focus on the rear delts."],
+biceps:["Κράτησε αγκώνες σταθερούς και λύγισε ελεγχόμενα.","Μην κουνάς τον κορμό για να ανεβάσεις βάρος.","Κατέβασε αργά για καλύτερο έλεγχο.","Keep elbows steady and curl with control.","Avoid swinging your torso.","Lower slowly."],
+triceps:["Κράτησε τον βραχίονα σταθερό και τέντωσε τον αγκώνα ομαλά.","Μην ανοίγεις ανεξέλεγκτα τους αγκώνες ή χρησιμοποιείς φόρα.","Διατήρησε πλήρη έλεγχο στην επιστροφή.","Keep upper arms stable and extend elbows smoothly.","Avoid flaring elbows or using momentum.","Control the return."],
+calves:["Σήκωσε τις φτέρνες ψηλά και κατέβασε αργά.","Μην αναπηδάς στις επαναλήψεις.","Κάνε μια μικρή παύση στην κορυφή.","Raise heels and lower slowly.","Avoid bouncing.","Pause briefly at the top."],
+core:["Σφίξε κοιλιά και διατήρησε σταθερή λεκάνη.","Μην κρατάς την αναπνοή ή υπερεκτείνεις τη μέση.","Προτίμησε ποιοτικές επαναλήψεις αντί για ταχύτητα.","Brace your core and stabilize the pelvis.","Avoid breath-holding or excessive lower-back arch.","Prioritize controlled reps over speed."]};
+const guideEl=document.getElementById('piExerciseGuide'),guideSearch=document.getElementById('piGuideSearch'),guideList=document.getElementById('piGuideList'),guideDetail=document.getElementById('piGuideDetail');
+function guideLanguage(){return 'en'}
+const detailedGuide={
+'Barbell Bench Press':['Ξάπλωσε στον πάγκο, πέλματα σταθερά στο πάτωμα και ωμοπλάτες πίσω. Πιάσε τη μπάρα λίγο πιο ανοιχτά από τους ώμους. Κατέβασέ τη ελεγχόμενα στο μέσο του στήθους και πίεσε προς τα πάνω.','Μην ανασηκώνεις τους γλουτούς ή αφήνεις τη μπάρα να αναπηδά στο στήθος.','Χρησιμοποίησε ασφάλειες ή spotter όταν δουλεύεις βαριά.'],
+'Incline Dumbbell Press':['Ρύθμισε τον πάγκο σε ήπια κλίση. Κράτησε τους αλτήρες δίπλα στο άνω στήθος και πίεσε ανοδικά, διατηρώντας τους καρπούς σταθερούς. Κατέβασε αργά.','Μην επιλέγεις πολύ απότομη κλίση ή χτυπάς τους αλτήρες μεταξύ τους.','Κράτησε τις ωμοπλάτες σταθερές στον πάγκο.'],
+'Push Ups':['Τοποθέτησε παλάμες λίγο πιο ανοιχτά από τους ώμους και κράτησε σώμα σε ευθεία από κεφάλι έως φτέρνες. Λύγισε τους αγκώνες, πλησίασε το στήθος στο έδαφος και πίεσε πίσω.','Μην αφήνεις τη μέση να κρεμάει ή τους αγκώνες να ανοίγουν κάθετα.','Σφίξε κοιλιά και γλουτούς σε κάθε επανάληψη.'],
+'Pull Ups':['Κρεμάσου από τη μπάρα με ενεργούς ώμους. Τράβηξε τους αγκώνες προς τα πλευρά μέχρι το πηγούνι να φτάσει κοντά στη μπάρα και κατέβασε ελεγχόμενα.','Μην κλωτσάς τα πόδια ή σηκώνεις τους ώμους προς τα αυτιά.','Ξεκίνα με υποβοήθηση αν χρειάζεται.'],
+'Lat Pulldown':['Κάθισε με τους μηρούς σταθερούς κάτω από τα μαξιλάρια. Τράβηξε τη λαβή προς το άνω στήθος οδηγώντας με τους αγκώνες και επέστρεψε αργά.','Μην τραβάς πίσω από τον αυχένα ή γέρνεις υπερβολικά πίσω.','Σκέψου να κατεβάζεις τους αγκώνες προς τις τσέπες.'],
+'One Arm Dumbbell Row':['Στήριξε ένα χέρι σε πάγκο και κράτησε την πλάτη ουδέτερη. Τράβηξε τον αλτήρα προς τον γοφό με τον αγκώνα κοντά στον κορμό και κατέβασε αργά.','Μην στρίβεις απότομα τον κορμό ή σηκώνεις τον ώμο.','Δούλεψε το ίδιο εύρος και στις δύο πλευρές.'],
+'Goblet Squat':['Κράτησε έναν αλτήρα ή kettlebell μπροστά στο στήθος. Κάθισε προς τα κάτω και ελαφρά πίσω, με πέλματα σταθερά και γόνατα στην κατεύθυνση των δαχτύλων. Σήκω πιέζοντας το έδαφος.','Μην καμπουριάζεις ή σηκώνεις τις φτέρνες.','Διάλεξε βάθος που ελέγχεις χωρίς πόνο.'],
+'Barbell Back Squat':['Τοποθέτησε τη μπάρα σταθερά στο άνω μέρος της πλάτης. Σφίξε τον κορμό, λύγισε ισχία και γόνατα και κατέβασε με έλεγχο. Ανέβα πιέζοντας μέσα από ολόκληρο το πέλμα.','Μην αφήνεις τη μέση να καταρρέει ή τα γόνατα να πέφτουν προς τα μέσα.','Χρησιμοποίησε rack με μπάρες ασφαλείας.'],
+'Romanian Deadlift':['Στάσου όρθιος με τη μπάρα κοντά στους μηρούς. Κράτησε ελαφρώς λυγισμένα γόνατα και σπρώξε τους γοφούς πίσω μέχρι να νιώσεις διάταση στους οπίσθιους μηριαίους. Επανέφερε τους γοφούς μπροστά.','Μην μετατρέπεις την κίνηση σε βαθύ κάθισμα ή στρογγυλεύεις τη μέση.','Κράτησε το βάρος κοντά στα πόδια.'],
+'Dumbbell Romanian Deadlift':['Κράτησε αλτήρες μπροστά από τους μηρούς. Σπρώξε τους γοφούς πίσω με ελαφρώς λυγισμένα γόνατα, κατεβάζοντας τους αλτήρες κοντά στα πόδια. Επέστρεψε με τους γλουτούς.','Μην σκύβεις κυρίως από τη μέση.','Η κίνηση ξεκινά από τους γοφούς.'],
+'Barbell Deadlift':['Στάσου με τη μπάρα πάνω από το μέσο του πέλματος. Πιάσε τη μπάρα, σταθεροποίησε πλάτη και κορμό και σήκωσε τεντώνοντας γόνατα και ισχία μαζί. Κατέβασε με έλεγχο.','Μην τραβάς απότομα με χαλαρή πλάτη ή υπερεκτείνεις στην κορυφή.','Ξεκίνα με τεχνική και κατάλληλο βάρος.'],
+'Plank':['Στήριξε αγκώνες κάτω από τους ώμους και μύτες ποδιών στο έδαφος. Σφίξε κοιλιά και γλουτούς κρατώντας κεφάλι, κορμό και λεκάνη σε ευθεία.','Μην αφήνεις τη λεκάνη να πέφτει ή κρατάς την αναπνοή.','Προτίμησε μικρότερη διάρκεια με σωστή στάση.'],
+'Incline Dumbbell Curl':['Κάθισε σε επικλινή πάγκο με τα χέρια να κρέμονται δίπλα στον κορμό. Λύγισε τους αγκώνες χωρίς να τους μετακινείς μπροστά και κατέβασε αργά τους αλτήρες.','Μην κουνάς τον κορμό ή σηκώνεις τους ώμους.','Διατήρησε πλήρη έλεγχο στην αρνητική φάση.'],
+'Spider Curl':['Στήριξε το στήθος σε επικλινή πάγκο με τα χέρια προς τα κάτω. Λύγισε τους αγκώνες ανεβάζοντας τους αλτήρες και κατέβασε ελεγχόμενα.','Μην ξεκολλάς το στήθος ή χρησιμοποιείς φόρα.','Κράτησε τους βραχίονες σχετικά σταθερούς.'],
+'Dumbbell Lateral Raise':['Κράτησε αλτήρες στα πλάγια με ελαφρώς λυγισμένους αγκώνες. Σήκωσε τα χέρια προς τα έξω περίπου έως το ύψος των ώμων και κατέβασε αργά.','Μην ανασηκώνεις τους ώμους ή πετάς τα βάρη με φόρα.','Μικρότερο βάρος συχνά δίνει καλύτερη τεχνική.']
+};
+function guideSpecific(item){const n=item.name; if(detailedGuide[n])return detailedGuide[n]; const g=guideGroups[item.group]||guideGroups.core;let movement='';if(/curl/i.test(n))movement='Λύγισε τους αγκώνες σηκώνοντας το βάρος προς τους ώμους και κατέβασε αργά.';else if(/row/i.test(n))movement='Τράβηξε τη λαβή ή το βάρος προς τον κορμό με τους αγκώνες και επέστρεψε ελεγχόμενα.';else if(/press|pushdown|extension|skull crusher/i.test(n))movement='Πίεσε ή έκτεινε τα χέρια στη φορά της άσκησης και επέστρεψε αργά, κρατώντας τις αρθρώσεις σταθερές.';else if(/squat|lunge|split squat|step.up/i.test(n))movement='Λύγισε ισχία και γόνατα με έλεγχο, κράτησε τα πέλματα σταθερά και ανέβα πιέζοντας το έδαφος.';else if(/deadlift|rdl|hinge|good morning/i.test(n))movement='Σπρώξε τους γοφούς πίσω με ουδέτερη πλάτη και επέστρεψε τεντώνοντας τα ισχία.';else if(/raise|fly/i.test(n))movement='Κίνησε τα χέρια στο προβλεπόμενο τόξο χωρίς φόρα και επέστρεψε αργά.';else if(/plank|hold/i.test(n))movement='Κράτησε σταθερό κορμό και φυσιολογική αναπνοή σε όλη τη διάρκεια.';else if(/crunch|sit.up|leg raise/i.test(n))movement='Ενεργοποίησε τους κοιλιακούς, εκτέλεσε αργά και απόφυγε να τραβάς τον αυχένα.';else if(/pull.up|chin.up|pulldown/i.test(n))movement='Τράβηξε τους αγκώνες προς τον κορμό χωρίς να χρησιμοποιείς φόρα και επέστρεψε ελεγχόμενα.';else movement=g[0];return [movement+' '+g[0],g[1],g[2]];}
+function showGuide(name){const item=db.find(x=>x.name===name);if(!item)return;const g=guideSpecific(item),en=guideLanguage()==='en',offset=en?3:0;const equipmentText=item.gear.length?item.gear.map(x=>equipment[x]||x).join(', '):(en?'Bodyweight':'Βάρος σώματος');guideDetail.innerHTML='<div class="pi-guide-panel"><h3>'+esc(item.name)+'</h3><div class="pi-guide-tag">'+esc(item.group)+' · '+esc(equipmentText)+'</div><p><b>'+(en?'How to:':'Εκτέλεση:')+'</b> '+esc(en?(guideGroups[item.group]||guideGroups.core)[3]:g[0])+'</p><p><b>'+(en?'Avoid:':'Πρόσεξε:')+'</b> '+esc(en?(guideGroups[item.group]||guideGroups.core)[4]:g[1])+'</p><p><b>Tip:</b> '+esc(en?(guideGroups[item.group]||guideGroups.core)[5]:g[2])+'</p></div>';guideDetail.scrollIntoView({block:'nearest',behavior:'smooth'});}
+function renderGuide(){const q=guideSearch.value.trim().toLowerCase(),matches=db.filter(x=>x.name.toLowerCase().includes(q));guideList.innerHTML=matches.map(x=>'<button type="button" class="pi-guide-item" data-guide="'+esc(x.name)+'">'+esc(x.name)+'</button>').join('')||'<p>'+(guideLanguage()==='en'?'No exercises found.':'Δεν βρέθηκαν ασκήσεις.')+'</p>';guideList.querySelectorAll('[data-guide]').forEach(b=>b.addEventListener('click',()=>showGuide(b.dataset.guide)));}
+guideSearch.addEventListener('input',renderGuide);renderGuide();guideEl.addEventListener('toggle',()=>{if(guideEl.open)renderGuide()});document.getElementById('pulseLanguage')?.addEventListener('change',()=>{if(guideEl.open)renderGuide()});renderGuide();
+})();
+
+</script><div aria-labelledby="piModalTitle" aria-modal="true" class="pi-modal-backdrop" hidden="" id="piOnboard" role="dialog"><div class="pi-modal"><div id="piModalBody"></div></div></div><script id="pi-four-tabs">
+(()=>{'use strict';
+const sections={home:[['dashboard','Overview']],workout:[['workout','Active Workout'],['programLibrary','Find Program'],['piExerciseGuidePage','Exercise Guide'],['archives','Program Archive']],progress:[['strength','Charts'],['review','Weekly Review'],['history','History'],['body','Body Metrics']],profile:[['piAccountPage','My Profile']]};
+const names={home:['🏠 Home','🏠 Αρχική'],workout:['🏋️ Workout','🏋️ Προπόνηση'],progress:['📈 Progress','📈 Πρόοδος'],profile:['👤 Profile','👤 Προφίλ']};
+const main=document.getElementById('piMainNav'),sub=document.getElementById('piSubNav');let active='home';
+const en=()=>true;
+function groupFor(id){return Object.keys(sections).find(k=>sections[k].some(x=>x[0]===id))||'home'}
+function renderNav(id){active=groupFor(id);main.innerHTML=Object.keys(sections).map(k=>`<button type="button" data-main="${k}" class="${k===active?'active':''}">${names[k][en()?0:1]}</button>`).join('');main.querySelectorAll('button').forEach(b=>b.onclick=()=>go(sections[b.dataset.main][0][0]));sub.innerHTML=sections[active].map(([key,label])=>`<button type="button" data-sub="${key}" class="${id===key?'active':''}">${label}</button>`).join('');sub.querySelectorAll('button').forEach(b=>b.onclick=()=>go(b.dataset.sub))}
+function go(id){if(id==='piAccountPage'){document.querySelectorAll('.tab,.page').forEach(x=>x.classList.remove('active'));document.getElementById(id)?.classList.add('active');window.scrollTo(0,0)}else if(id==='piExerciseGuidePage'){document.querySelectorAll('.tab,.page').forEach(x=>x.classList.remove('active'));document.getElementById(id)?.classList.add('active');window.scrollTo(0,0)}else{const b=document.querySelector('#piLegacyTabs [data-tab="'+id+'"]');if(b)b.click();else if(typeof navigate==='function')navigate(id)}renderNav(id);if(id==='piAccountPage'){let p={};try{p=JSON.parse(localStorage.getItem('pulseiron-clean-v4-profile')||'{}')}catch(e){}document.getElementById('piAccountSummary').textContent=[p.firstName,p.lastName].filter(Boolean).join(' ')||'Set up your profile to personalize training.'}}
+window.piGoSection=go;
+renderNav('dashboard');document.querySelectorAll('#piLegacyTabs .tab').forEach(b=>b.addEventListener('click',()=>renderNav(b.dataset.tab)));
+document.getElementById('pulseLanguage')?.addEventListener('change',()=>renderNav(document.querySelector('.page.active')?.id||'dashboard'));
+document.getElementById('piAccountEdit').onclick=()=>window.piShowProfile?.();document.getElementById('piAccountTour').onclick=()=>window.piShowTour?.();document.getElementById('piAccountBackup').onclick=()=>document.getElementById('backupBtn')?.click();
+})();
+</script><script id="pi-onboard-script">
+(()=>{
+'use strict';
+const K='pulseiron-clean-v4-profile',TK='pulseiron-clean-v4-tour', OLD='pulseiron-onboarding-profile-v1';
+const $=id=>document.getElementById(id), modal=$('piOnboard'), body=$('piModalBody');
+const en=()=>true;
+const tr=(gr,eng)=>en()?eng:gr;
+let phase='profile',idx=0;
+const slides=[
+ ['🏠','Overview','Δες την εβδομάδα σου, προπονήσεις και ημέρες ξεκούρασης.','See your week, workouts and rest days.'],
+ ['🏋️','Active Program','Κατάγραψε τα πραγματικά κιλά, τις επαναλήψεις και τις σημειώσεις σου.','Log actual weights, reps and workout notes.'],
+ ['📚','Program Library','Διάλεξε πρόγραμμα, Gym/Home, εξοπλισμό και διάβασε σύντομες οδηγίες ασκήσεων.','Choose a program, Gym/Home equipment and read quick exercise tips.'],
+ ['📈','Progress & Weekly Review','Τα γραφήματα δείχνουν την εξέλιξη κιλών, όγκου και επαναλήψεων. Το Weekly Review προτείνει στόχους που εγκρίνεις εσύ.','Charts show changes in weight, volume and reps. Weekly Review suggests targets for your approval.'],
+ ['💾','History, Profile & Backup','Το ιστορικό κρατά τις καταχωρίσεις σου. Κάνε Export JSON τακτικά για ασφαλές αντίγραφο.','History keeps your entries. Export a JSON backup regularly.']
+];
+function stored(){try{return JSON.parse(localStorage.getItem(K)||'null')}catch(e){return null}}
+function legacy(){try{return JSON.parse(localStorage.getItem(OLD)||'null')}catch(e){return null}}
+function open(){modal.hidden=false;document.body.style.overflow=phase==='tour'?'':'hidden';modal.classList.toggle('pi-tour-mode',phase==='tour')}
+function close(){modal.hidden=true;modal.classList.remove('pi-tour-mode');document.body.style.overflow=''}
+function showProfile(){phase='profile';open();let existing=stored()||{};
+let p=existing;body.innerHTML=`<div class="pi-step">${tr('Προσωπικό προφίλ','Personal profile')}</div><h2 id="piModalTitle">👤 ${tr('Καλώς ήρθες στο PULSEIRON','Welcome to PULSEIRON')}</h2><p>${tr('Συμπλήρωσε τα στοιχεία σου μία φορά. Θα χρησιμοποιούνται ως αφετηρία σε νέα προγράμματα, χωρίς να αλλάζουν τις καταχωρίσεις σου.','Enter your details once. They will be reused for new programs without changing existing workout logs.')}</p><div class="pi-modal-grid"><div><label for="piUserFirst">${tr('Όνομα','First name')}</label><input id="piUserFirst" autocomplete="given-name" maxlength="60"></div><div><label for="piUserLast">${tr('Επώνυμο','Last name')}</label><input id="piUserLast" autocomplete="family-name" maxlength="60"></div><div><label for="piUserAge">${tr('Ηλικία','Age')}</label><input id="piUserAge" type="number" min="13" max="110" step="1"></div><div><label for="piUserHeight">${tr('Ύψος (cm)','Height (cm)')}</label><input id="piUserHeight" type="number" min="100" max="250" step="1"></div><div><label for="piUserWeight">${tr('Βάρος (kg)','Weight (kg)')}</label><input id="piUserWeight" type="number" min="25" max="350" step="0.1"></div></div><label for="piUserLevel">${tr('Επίπεδο','Experience level')}</label><select id="piUserLevel"><option value="beginner">Beginner</option><option value="intermediate">Intermediate</option><option value="advanced">Advanced</option></select><label for="piUserGoal">${tr('Στόχος','Goal')}</label><select id="piUserGoal"><option value="muscle">Muscle growth</option><option value="strength">Strength</option><option value="fatloss">Fat loss</option><option value="recomp">Body recomposition</option><option value="fitness">General fitness</option></select><div class="pi-modal-grid"><div><label for="piUserLocation">${tr('Προπόνηση','Training location')}</label><select id="piUserLocation"><option value="gym">Gym</option><option value="home">Home</option><option value="both">Gym & Home</option></select></div><div><label for="piUserDays">${tr('Ημέρες προπόνησης / εβδομάδα','Training days per week')}</label><select id="piUserDays"><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option></select></div></div><div id="piUserEquipmentSection"><label>${tr('Τι εξοπλισμό έχεις στο σπίτι; (πολλαπλές επιλογές)','What equipment do you have at home? (select multiple)')}</label><div id="piUserEquipmentChoices" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:9px;margin:10px 0 16px">${[['db','🏋️ Dumbbells / Αλτήρες'],['bar','Barbell / Μπάρα & δίσκοι'],['bench','Bench / Πάγκος'],['bands','Resistance bands / Λάστιχα'],['pullup','Pull-up bar / Μονόζυγο'],['kettlebell','Kettlebells'],['rack','Squat rack'],['cable','Cable machine / Τροχαλία'],['machine','Machines / Μηχανήματα'],['trx','TRX / Suspension trainer'],['mat','Exercise mat / Στρωματάκι'],['jump_rope','Jump rope / Σχοινάκι'],['bike','Exercise bike / Ποδήλατο'],['treadmill','Treadmill / Διάδρομος'],['rower','Rowing machine / Κωπηλατικό'],['step','Step / Box'],['medicine_ball','Medicine ball / Ιατρική μπάλα'],['foam_roller','Foam roller'],['bodyweight','Bodyweight only / Χωρίς εξοπλισμό']].map(([id,label])=>`<label style="display:flex;align-items:center;gap:8px;border:1px solid #556050;border-radius:10px;padding:10px;cursor:pointer;font-size:13px"><input type="checkbox" value="${id}" class="pi-user-gear" style="width:18px;height:18px;flex-shrink:0">${label}</label>`).join('')}</div><p style="font-size:12px;opacity:.8">${tr('Επίλεξε όσα διαθέτεις. Μπορείς να τα αλλάξεις αργότερα από το προφίλ.','Select all that apply. You can update these later in your profile.')}</p></div><p id="piProfileError" role="alert" style="color:#ffb5a8"></p><div class="pi-modal-actions"><button type="button" id="piProfileSave">${tr('Αποθήκευση & συνέχεια','Save & continue')}</button></div>`;
+const set=(id,val)=>{if(val!==undefined&&val!==null)$(id).value=val};set('piUserAge',p.age);set('piUserLocation',p.trainingLocation||'gym');set('piUserDays',p.trainingDays||'4');const oldGear={full:[],dumbbells:['db'],bodyweight:['bodyweight'],mixed:['db','bands']};const savedGear=Array.isArray(p.homeEquipment)?p.homeEquipment:(Array.isArray(p.equipment)?p.equipment:(oldGear[p.equipment]||[]));$('piUserEquipmentChoices').querySelectorAll('input').forEach(e=>e.checked=savedGear.includes(e.value));const updateGearVisibility=()=>{$('piUserEquipmentSection').style.display=$('piUserLocation').value==='gym'?'none':'block'};$('piUserLocation').addEventListener('change',updateGearVisibility);updateGearVisibility();set('piUserFirst',p.firstName);set('piUserLast',p.lastName);set('piUserHeight',p.height);set('piUserWeight',p.weight);set('piUserLevel',p.experience||'beginner');set('piUserGoal',p.goal||'muscle');
+
+$('piProfileSave').onclick=()=>{const v={age:Number($('piUserAge').value),trainingLocation:$('piUserLocation').value,trainingDays:Number($('piUserDays').value),equipment:[...$('piUserEquipmentChoices').querySelectorAll('input:checked')].map(e=>e.value),homeEquipment:[...$('piUserEquipmentChoices').querySelectorAll('input:checked')].map(e=>e.value),firstName:$('piUserFirst').value.trim(),lastName:$('piUserLast').value.trim(),height:Number($('piUserHeight').value),weight:Number($('piUserWeight').value),experience:$('piUserLevel').value,goal:$('piUserGoal').value};if(!v.firstName||!v.lastName||!Number.isInteger(v.age)||v.age<13||v.age>110||!Number.isFinite(v.height)||v.height<100||v.height>250||!Number.isFinite(v.weight)||v.weight<25||v.weight>350){$('piProfileError').textContent=tr('Συμπλήρωσε όνομα, επώνυμο, έγκυρο ύψος και βάρος.','Enter name, surname, valid height and weight.');return}try{localStorage.setItem(K,JSON.stringify(v));const old=legacy()||{};localStorage.setItem(OLD,JSON.stringify({...old,height:v.height,weight:v.weight,experience:v.experience,goal:v.goal}));['piHeight','piWeight','piExperience','piGoal'].forEach((id,i)=>{const el=$(id);if(el)el.value=[v.height,v.weight,v.experience,v.goal][i]});close();if(!localStorage.getItem(TK))showTour(0)}catch(e){$('piProfileError').textContent=tr('Η αποθήκευση απέτυχε. Έλεγξε τον χώρο του browser.','Save failed. Check browser storage.')}};
+}
+function showTour(n){phase='tour';idx=n;const ids=['dashboard','workout','programLibrary','strength','history'];
+ const a=slides[idx];const dest=ids[idx];
+ if(typeof window.piGoSection==='function')window.piGoSection(dest);
+ else {const tab=document.querySelector('[data-tab="'+dest+'"]');if(tab)tab.click()}
+ open();body.innerHTML=`<div class="pi-step">${tr('Ξενάγηση','Guided tour')} · ${idx+1}/${slides.length}</div><h2 id="piModalTitle">${a[0]} ${a[1]}</h2><p>${en()?a[3]:a[2]}</p><div class="pi-modal-actions"><button class="pi-muted" id="piTourSkip">${tr('Παράλειψη','Skip')}</button>${idx>0?'<button class="pi-muted" id="piTourBack">'+tr('Πίσω','Back')+'</button>':''}<button id="piTourNext">${idx===slides.length-1?tr('Τέλος','Finish'):tr('Επόμενο','Next →')}</button></div>`;
+ $('piTourSkip').onclick=finish;$('piTourNext').onclick=()=>idx===slides.length-1?finish():showTour(idx+1);if($('piTourBack'))$('piTourBack').onclick=()=>showTour(idx-1)}
+function finish(){try{localStorage.setItem(TK,'yes')}catch(e){}close();if(typeof window.piGoSection==='function')window.piGoSection('programLibrary');else {const tab=document.querySelector('[data-tab="programLibrary"]');if(tab)tab.click()}}
+function mount(){const target=$('programLibrary');if(target&&!$('piProfileToolbar')){const t=document.createElement('div');t.id='piProfileToolbar';t.className='pi-profile-toolbar';t.innerHTML='<button type="button" id="piOpenProfile">👤 My Profile</button><button type="button" id="piReplayTour">ⓘ Replay Tutorial</button>';target.insertBefore(t,target.children[1]||null);$('piOpenProfile').onclick=showProfile;$('piReplayTour').onclick=()=>showTour(0)}
+// Small explanations on chart panels without modifying their underlying calculations.
+for(const id of ['volumeChart','repsChart','weightChart','exerciseRepsChart','exerciseVolumeChart']){const el=$(id);if(!el||el.parentElement.querySelector('[data-chart-help="'+id+'"]'))continue;const btn=document.createElement('button');btn.type='button';btn.className='pi-help';btn.dataset.chartHelp=id;btn.textContent='i';btn.setAttribute('aria-label','Chart explanation');btn.title='Chart explanation';btn.onclick=()=>alert(({volumeChart:tr('Συνολικός όγκος προπόνησης ανά εβδομάδα: κιλά × επαναλήψεις.','Weekly training volume: weight × repetitions.'),repsChart:tr('Σύνολο επαναλήψεων ανά εβδομάδα.','Total reps each week.'),weightChart:tr('Πραγματικά κιλά της επιλεγμένης άσκησης ανά προπόνηση.','Actual load for the selected exercise over time.'),exerciseRepsChart:tr('Επαναλήψεις της επιλεγμένης άσκησης.','Repetitions for the selected exercise.'),exerciseVolumeChart:tr('Όγκος της επιλεγμένης άσκησης: κιλά × επαναλήψεις.','Selected exercise volume: weight × reps.')})[id]);el.parentElement.insertBefore(btn,el)}
+}
+function init(){mount();window.piShowProfile=showProfile;window.piShowTour=()=>showTour(0);if(!stored())showProfile();else if(!localStorage.getItem(TK))showTour(0)}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script><script>try{if(/iPhone|iPad|iPod/i.test(navigator.userAgent)&&location.protocol==='file:'){document.getElementById('iosFileNotice').style.display='block'}}catch(e){}</script></body></html>
