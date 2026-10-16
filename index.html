@@ -339,11 +339,21 @@ el('pulseCalendar').innerHTML=cells.join('');overviewWeekControls();
 let best={};r.forEach(x=>{if(!best[x.exercise]||num(x.kg)>num(best[x.exercise].kg))best[x.exercise]=x});el('pulseHall').innerHTML=Object.values(best).sort((a,b)=>b.kg-a.kg).slice(0,12).map(x=>'<div class="pulse-pr"><span class="pulse-eyebrow">PERSONAL BEST</span><strong>'+esc(x.exercise)+'</strong><b>'+x.kg+' kg</b><div><small>'+esc(x.date)+' · '+num(x.reps)+' total reps</small></div><button class="pulse-action" style="margin-top:12px" data-open-ex="'+esc(x.exercise)+'">View Chart ↗</button></div>').join('');el('pulseHall').querySelectorAll('[data-open-ex]').forEach(b=>b.onclick=()=>openExercise(b.dataset.openEx));
 }
 function openExercise(ex){
+  // Keep the selected Personal Best exercise while opening Progress at the top.
   const select=el('exerciseSelect');
-  if(select)select.value=ex;
+  if(select && [...select.options].some(option=>option.value===ex)) select.value=ex;
   renderStrength();
   if(typeof window.piGoSection==='function')window.piGoSection('strength');
   else navigate('strength');
+  // Reset scroll after the section has rendered (also handles mobile browsers).
+  const resetProgressScroll=()=>{
+    window.scrollTo({top:0,left:0,behavior:'instant'});
+    document.documentElement.scrollTop=0;
+    document.body.scrollTop=0;
+  };
+  resetProgressScroll();
+  requestAnimationFrame(()=>{resetProgressScroll();requestAnimationFrame(resetProgressScroll)});
+  setTimeout(resetProgressScroll,100);
 }
 function templates(){let sessions=uniq2(rows.filter(x=>x.week===1).map(x=>x.session)).sort((a,b)=>a-b);if(!el('pulseTemplates'))return;el('pulseTemplates').innerHTML=sessions.map(s=>{let list=rows.filter(x=>x.week===1&&x.session===s),name=list[0]?.workout||'Session '+s;return '<div class="pulse-card"><span class="pulse-eyebrow">SESSION '+s+'</span><h3 style="margin-top:10px">'+esc(name)+'</h3><ul class="pulse-exlist">'+list.map(x=>'<li><strong>'+esc(x.exercise)+'</strong><span>'+x.sets+' sets × '+esc(x.targetReps)+'</span></li>').join('')+'</ul><button class="pulse-action" data-s="'+s+'">▶ Open Workout</button></div>'}).join('');el('pulseTemplates').querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{el('session').value=b.dataset.s;renderWorkout();navigate('workout')});}
 function library(){let q=(el('pulseLibrarySearch').value||'').toLowerCase(),ex=uniq2(rows.map(x=>x.exercise)).sort(),filtered=ex.filter(n=>n.toLowerCase().includes(q));el('pulseLibrary').innerHTML=filtered.map(n=>{let a=rows.filter(x=>x.exercise===n),best=a.filter(recorded).sort((x,y)=>num(y.kg)-num(x.kg))[0],hint=a.find(x=>x.technique)?.technique||'Διατήρησε σωστή τεχνική και έλεγχο της κίνησης.';return '<div class="pulse-card"><span class="pulse-eyebrow">EXERCISE</span><h3 style="margin:9px 0">'+esc(n)+'</h3><p class="pulse-muted">'+esc(hint)+'</p><div class="pulse-row"><span>Καλύτερο βάρος</span><b>'+(best?best.kg+' kg':'—')+'</b></div><button class="pulse-action" style="margin-top:16px" data-ex="'+esc(n)+'">Γράφημα προόδου ↗</button></div>'}).join('')||'<p>Δεν βρέθηκαν ασκήσεις.</p>';el('pulseLibrary').querySelectorAll('[data-ex]').forEach(b=>b.onclick=()=>openExercise(b.dataset.ex));}
