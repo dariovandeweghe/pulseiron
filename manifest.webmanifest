@@ -1,0 +1,25 @@
+{
+  "name": "PULSEIRON \u2014 Training & Progress",
+  "short_name": "PULSEIRON",
+  "description": "Personal training and progress tracker",
+  "id": "/pulseiron/",
+  "start_url": "/pulseiron/",
+  "scope": "/pulseiron/",
+  "display": "standalone",
+  "background_color": "#090a09",
+  "theme_color": "#b4f000",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
